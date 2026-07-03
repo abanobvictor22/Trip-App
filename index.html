@@ -5,42 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة ومصروفات الرحلات الاحترافي - سحابي ☁️</title>
-    <!-- بديل التيلويند المستقر -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <!-- بديل مكتبة الـ PDF المستقر -->
-    <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+        }
+    </script>
 </head>
 
-<body class="bg-gray-50 font-sans min-h-screen p-4 md:p-8">
+<body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans min-h-screen p-4 md:p-8 overflow-x-hidden transition-colors duration-300">
 
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto w-full">
         <header
-            class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 bg-white p-6 rounded-xl shadow border border-gray-100">
+            class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 transition-colors">
             <div class="text-center sm:text-right">
-                <h1 class="text-3xl font-bold text-blue-600 mb-2">🌍 نظام إدارة ومصروفات الرحلات المشترك</h1>
-                <p class="text-gray-600 text-sm">أنشئ رحلات، شارك الكود مع أصدقائك للمزامنة اللحظية، وسجل الفواتير بدقة
+                <h1 class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">🌍 نظام إدارة ومصروفات الرحلات
+                    المشترك</h1>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">أنشئ رحلات، شارك الكود مع أصدقائك للمزامنة اللحظية،
+                    وسجل الفواتير بدقة
                 </p>
             </div>
             <button onclick="clearLocalTracking()"
-                class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer">
-                🗑️ مسح قائمة الرحلات المحفوظة على هذا الجهاز
+                class="bg-rose-100 dark:bg-rose-900/50 hover:bg-rose-200 dark:hover:bg-rose-800 text-rose-700 dark:text-rose-300 px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer">
+                🗑️ مسح كل الرحلات من هذا الجهاز
             </button>
         </header>
 
-        <div class="bg-white p-6 rounded-xl shadow border border-blue-100 mb-8 bg-blue-50/10 space-y-6">
-            <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+        <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-blue-100 dark:border-blue-800/30 mb-8 bg-blue-50/10 dark:bg-blue-900/10 space-y-6 transition-colors">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                 <span>🧳</span> إدارة وتزامن الرحلات الجماعية
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-gray-100 pb-6">
-                <div class="space-y-2 border-l border-gray-100 pl-4">
-                    <label class="block text-xs font-bold text-gray-700">➕ إنشاء رحلة سحابية جديدة:</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-gray-100 dark:border-gray-700 pb-6">
+                <div class="space-y-2 md:border-l border-gray-100 dark:border-gray-700 md:pl-4">
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">➕ إنشاء رحلة سحابية
+                        جديدة:</label>
                     <div class="flex flex-col gap-2">
                         <input id="tripNameInput" type="text" placeholder="اسم الرحلة (مثلاً: رحلة دهب 2026)"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
-                        <div class="flex gap-2">
+                            class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400">
+                        <div class="flex flex-col sm:flex-row gap-2">
                             <input id="tripDescInput" type="text" placeholder="معلومات عنها (مثلاً: سفارية الصحاب)"
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                                class="flex-1 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400">
                             <button onclick="createNewTrip()"
                                 class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition cursor-pointer whitespace-nowrap">إنشاء
                                 🚀</button>
@@ -49,14 +56,14 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-xs font-bold text-emerald-700">🔗 الانضمام لرحلة أصدقائك (بواسطة
-                        الكود):</label>
+                    <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">🔗 الانضمام لرحلة
+                        أصدقائك (بواسطة الكود):</label>
                     <div class="flex flex-col gap-2">
-                        <p class="text-xs text-gray-500">اطلب كود الرحلة من صديقك الذي أنشأها وضعه هنا لتشاهدوا وتعدلوا
-                            معاً:</p>
-                        <div class="flex gap-2">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">اطلب كود الرحلة من منشئها وضعه هنا للمشاهدة
+                            والتعديل المشترك:</p>
+                        <div class="flex flex-col sm:flex-row gap-2">
                             <input id="joinTripCodeInput" type="text" placeholder="اكتب الكود هنا (مثال: R452819)"
-                                class="flex-1 px-4 py-2 border-2 border-emerald-500 rounded-lg text-sm font-mono text-center focus:outline-none uppercase font-bold">
+                                class="flex-1 px-4 py-2 bg-white dark:bg-gray-700 border-2 border-emerald-500 dark:border-emerald-600 rounded-lg text-sm text-gray-900 dark:text-white font-mono text-center focus:outline-none uppercase font-bold">
                             <button onclick="joinTripById()"
                                 class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition cursor-pointer whitespace-nowrap">انضمام
                                 الآن 🔐</button>
@@ -67,13 +74,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end pt-2">
                 <div class="space-y-2 md:col-span-1">
-                    <label class="block text-xs font-bold text-blue-700">الرحلات المسجلة على جهازك حالياً:</label>
+                    <label class="block text-xs font-bold text-blue-700 dark:text-blue-400">الرحلات المسجلة على الجهاز
+                        حالياً:</label>
                     <select id="activeTripSelect" onchange="switchTrip()"
-                        class="w-full px-4 py-2 border-2 border-blue-500 rounded-lg text-sm bg-white font-semibold text-blue-900 focus:outline-none">
+                        class="w-full px-4 py-2 bg-white dark:bg-gray-700 border-2 border-blue-500 dark:border-blue-600 rounded-lg text-sm font-semibold text-blue-900 dark:text-blue-100 focus:outline-none">
                     </select>
                 </div>
                 <div id="currentTripInfoBox"
-                    class="md:col-span-2 p-3 bg-blue-50 rounded-lg border border-blue-200 text-xs text-blue-950 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 hidden">
+                    class="md:col-span-2 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800/50 text-xs text-blue-950 dark:text-blue-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 hidden">
                 </div>
             </div>
         </div>
@@ -82,90 +90,98 @@
 
             <div class="space-y-6 lg:col-span-1">
 
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 transition-colors">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
                         <span>👥</span> أفراد الرحلة
                     </h2>
                     <div class="space-y-3">
                         <div class="flex flex-col sm:flex-row gap-2">
                             <input id="memberNameInput" type="text" placeholder="اسم الشخص"
-                                class="w-full sm:flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm">
+                                class="w-full sm:flex-1 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
                             <input id="memberPhoneInput" type="tel" placeholder="رقم الموبايل"
-                                class="w-full sm:flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm">
+                                class="w-full sm:flex-1 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <button onclick="addMember()"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer">إضافة
                             العضو الجديد</button>
                     </div>
-                    <div id="membersList" class="flex flex-col gap-1.5 mt-4 max-h-40 overflow-y-auto p-1">
+                    <div id="membersList"
+                        class="flex flex-col gap-1.5 mt-4 max-h-40 overflow-y-auto p-1 custom-scrollbar">
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <h2 id="expenseCardTitle" class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 transition-colors">
+                    <h2 id="expenseCardTitle"
+                        class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
                         <span>💰</span> تسجيل حركة مصروفات جديدة
                     </h2>
 
-                    <div class="flex bg-gray-100 p-1 rounded-lg mb-4">
+                    <div class="flex bg-gray-100 dark:bg-gray-700/50 p-1 rounded-lg mb-4">
                         <button type="button" id="tabSimple" onclick="switchExpenseMode('simple')"
-                            class="flex-1 text-center py-1.5 text-xs font-bold rounded-md bg-white text-blue-600 shadow-sm cursor-pointer transition">مصروف
+                            class="flex-1 text-center py-1.5 text-xs font-bold rounded-md bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm cursor-pointer transition">مصروف
                             بسيط</button>
                         <button type="button" id="tabInvoice" onclick="switchExpenseMode('invoice')"
-                            class="flex-1 text-center py-1.5 text-xs font-bold rounded-md text-gray-600 cursor-pointer transition">فاتورة
+                            class="flex-1 text-center py-1.5 text-xs font-bold rounded-md text-gray-600 dark:text-gray-400 cursor-pointer transition">فاتورة
                             تفصيلية 🧾</button>
                     </div>
 
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">مين اللي دفع؟</label>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">من الذي قام
+                                بالدفع؟</label>
                             <select id="expensePayer"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm bg-white">
-                                <option value="">اختر شخصاً...</option>
+                                class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
+                                <option value="">اختيار شخص...</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">وصف الحساب الرئيسي</label>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">وصف الحساب
+                                الرئيسي</label>
                             <input id="expenseDesc" type="text" placeholder="غداء بمطعم، تذاكر سينما..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm">
+                                class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
                         </div>
 
                         <div id="simpleExpenseWrapper" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">إجمالي المبلغ
-                                    (بالجنيه)</label>
+                                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">إجمالي
+                                    المبلغ (بالجنيه)</label>
                                 <input id="expenseAmount" type="number" min="0" step="any" placeholder="0.00"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm">
+                                    class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
                             </div>
-                            <div class="border-t border-gray-100 pt-3">
+                            <div class="border-t border-gray-100 dark:border-gray-700 pt-3">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="block text-xs font-bold text-gray-700">توزيع المصروف (مين عليه
-                                        كام؟)</label>
+                                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">توزيع
+                                        المصروف</label>
                                     <button type="button" onclick="distributeEqually()"
-                                        class="text-xs text-blue-600 hover:text-blue-800 font-semibold underline cursor-pointer">تقسيم
+                                        class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold underline cursor-pointer">تقسيم
                                         بالتساوي 🪄</button>
                                 </div>
                                 <div id="sharesInputList"
-                                    class="space-y-2 max-h-48 overflow-y-auto p-2 bg-gray-50 rounded-lg border border-gray-100">
+                                    class="space-y-2 max-h-48 overflow-y-auto p-2 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-100 dark:border-gray-700">
                                 </div>
                             </div>
                         </div>
 
                         <div id="invoiceExpenseWrapper" class="space-y-4 hidden">
-                            <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 space-y-3">
-                                <span class="text-xs font-bold text-blue-800 block">➕ إضافة بند جديد داخل
-                                    الفاتورة:</span>
+                            <div
+                                class="bg-blue-50/50 dark:bg-blue-900/20 p-3 rounded-xl border border-blue-100 dark:border-blue-800/50 space-y-3">
+                                <span class="text-xs font-bold text-blue-800 dark:text-blue-300 block">➕ إضافة بند جديد
+                                    داخل الفاتورة:</span>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input id="invoiceItemName" type="text" placeholder="اسم البند (مثال: لحمة)"
-                                        class="px-3 py-1.5 border border-gray-300 rounded-md text-xs focus:outline-none focus:border-blue-500">
+                                        class="px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
                                     <input id="invoiceItemPrice" type="number" min="0" step="any"
                                         placeholder="سعر البند"
-                                        class="px-3 py-1.5 border border-gray-300 rounded-md text-xs focus:outline-none focus:border-blue-500">
+                                        class="px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white focus:outline-none focus:border-blue-500">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-gray-600 mb-1">مين اشترك في البند
-                                        ده؟</label>
+                                    <label
+                                        class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1">المشتركون
+                                        في البند</label>
                                     <div id="invoiceItemMembersBox"
-                                        class="flex flex-wrap gap-2 p-2 bg-white rounded-md border border-gray-200 max-h-24 overflow-y-auto text-xs">
+                                        class="flex flex-wrap gap-2 p-2 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 max-h-24 overflow-y-auto text-xs">
                                     </div>
                                 </div>
                                 <button type="button" onclick="addInvoiceItemToArray()"
@@ -174,41 +190,52 @@
                             </div>
 
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700">البنود المدرجة حالياً في
-                                    الفاتورة:</label>
+                                <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">البنود المدرجة
+                                    حالياً في الفاتورة:</label>
                                 <div id="temporaryInvoiceItemsList"
-                                    class="space-y-1 max-h-32 overflow-y-auto p-1 bg-gray-50 rounded-md border border-gray-200 text-xs">
+                                    class="space-y-1 max-h-32 overflow-y-auto p-1 bg-gray-50 dark:bg-gray-900/50 rounded-md border border-gray-200 dark:border-gray-700 text-xs">
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3 border-t border-gray-100 pt-3">
+                            <div class="grid grid-cols-3 gap-3 border-t border-gray-100 dark:border-gray-700 pt-3">
                                 <div>
-                                    <label class="block text-[11px] font-medium text-gray-600 mb-1">نسبة الخدمة
+                                    <label
+                                        class="block text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-1">خصم
+                                        (%)</label>
+                                    <input id="invoiceDiscountPercent" type="number" min="0" placeholder="0" value="0"
+                                        oninput="updateInvoiceLiveSummary()"
+                                        class="w-full px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-rose-600 dark:text-rose-400 focus:outline-none font-bold">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-1">خدمة
                                         (%)</label>
                                     <input id="invoiceServicePercent" type="number" min="0" placeholder="12" value="12"
                                         oninput="updateInvoiceLiveSummary()"
-                                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md text-xs focus:outline-none font-bold">
+                                        class="w-full px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white focus:outline-none font-bold">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-gray-600 mb-1">القيمة المضافة
+                                    <label
+                                        class="block text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-1">ضريبة
                                         (%)</label>
                                     <input id="invoiceVatPercent" type="number" min="0" placeholder="14" value="14"
                                         oninput="updateInvoiceLiveSummary()"
-                                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md text-xs focus:outline-none font-bold">
+                                        class="w-full px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white focus:outline-none font-bold">
                                 </div>
                             </div>
 
                             <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-xs space-y-1 font-mono">
-                                <div class="flex justify-between"><span>مجموع البنود الأساسي:</span><span
+                                <div class="flex justify-between"><span>مجموع البنود:</span><span
                                         id="lblInvoiceSubtotal">0.00 ج.م</span></div>
-                                <div class="flex justify-between text-gray-400"><span>قيمة الخدمة المحسوبة:</span><span
+                                <div class="flex justify-between text-rose-400"><span>قيمة الخصم:</span><span
+                                        id="lblInvoiceDiscountCost">0.00 ج.م</span></div>
+                                <div class="flex justify-between text-gray-400"><span>قيمة الخدمة:</span><span
                                         id="lblInvoiceServiceCost">0.00 ج.م</span></div>
-                                <div class="flex justify-between text-gray-400"><span>ضريبة القيمة المضافة:</span><span
+                                <div class="flex justify-between text-gray-400"><span>ضريبة (مضافة):</span><span
                                         id="lblInvoiceVatCost">0.00 ج.م</span></div>
                                 <div
                                     class="flex justify-between text-emerald-400 font-bold border-t border-gray-700 pt-1 mt-1 text-sm">
-                                    <span>الإجمالي النهائي المستحق:</span><span id="lblInvoiceGrandTotal">0.00
-                                        ج.م</span>
+                                    <span>الإجمالي النهائي:</span><span id="lblInvoiceGrandTotal">0.00 ج.م</span>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +245,7 @@
                                 class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-sm font-medium transition cursor-pointer">تسجيل
                                 الحساب</button>
                             <button id="cancelEditBtn" onclick="cancelEditing()"
-                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition cursor-pointer hidden">إلغاء</button>
+                                class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg text-sm font-medium transition cursor-pointer hidden">إلغاء</button>
                         </div>
                     </div>
                 </div>
@@ -228,59 +255,68 @@
             <div class="space-y-6 lg:col-span-2">
 
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-center">
-                        <p class="text-xs text-blue-600 font-medium mb-1">إجمالي مصاريف هذه الرحلة</p>
-                        <p id="totalTripExpenses" class="text-2xl font-bold text-blue-900">0 جنيه</p>
+                    <div
+                        class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl border border-blue-100 dark:border-blue-800/50 text-center transition-colors">
+                        <p class="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">إجمالي مصاريف الرحلة</p>
+                        <p id="totalTripExpenses" class="text-2xl font-bold text-blue-900 dark:text-blue-200">0 جنيه</p>
                     </div>
-                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
-                        <p class="text-xs text-purple-600 font-medium mb-1">عدد عمليات الشراء</p>
-                        <p id="totalInvoices" class="text-2xl font-bold text-purple-900">0</p>
+                    <div
+                        class="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-xl border border-purple-100 dark:border-purple-800/50 text-center transition-colors">
+                        <p class="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">عدد عمليات الشراء</p>
+                        <p id="totalInvoices" class="text-2xl font-bold text-purple-900 dark:text-purple-200">0</p>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                        <span>📋</span> دفتر مشتريات ومصروفات الرحلة بالتفصيل
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 transition-colors">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                        <span>📋</span> دفتر المشتريات والمصروفات بالتفصيل
                     </h2>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-right text-sm">
-                            <thead class="bg-gray-50 text-gray-600 uppercase text-xs border-b border-gray-200">
+                        <table class="w-full text-right text-sm min-w-[500px]">
+                            <thead
+                                class="bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 uppercase text-xs border-b border-gray-200 dark:border-gray-700">
                                 <tr>
                                     <th class="px-4 py-3">التاريخ 📅</th>
-                                    <th class="px-4 py-3">اللي دفع</th>
-                                    <th class="px-4 py-3">بتاع إيه؟</th>
-                                    <th class="px-4 py-3">المشتركين</th>
+                                    <th class="px-4 py-3">تم الدفع بواسطة</th>
+                                    <th class="px-4 py-3">البيان</th>
+                                    <th class="px-4 py-3">المشتركون</th>
                                     <th class="px-4 py-3">المبلغ</th>
-                                    <th class="px-4 py-3 text-center">إجراءات</th>
+                                    <th class="px-4 py-3 text-center">الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="expensesTableBody" class="divide-y divide-gray-100 text-gray-700"></tbody>
+                            <tbody id="expensesTableBody"
+                                class="divide-y divide-gray-100 dark:divide-gray-700 text-gray-700 dark:text-gray-300">
+                            </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                        <span>⚖️</span> محفظة كل فرد في الرحلة (الصافي)
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 transition-colors">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                        <span>⚖️</span> محفظة الأفراد (الصافي)
                     </h2>
                     <div id="settlementList" class="space-y-3"></div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow border border-indigo-100 bg-indigo-50/10">
-                    <h2 class="text-xl font-semibold text-indigo-900 mb-4 flex items-center gap-2">
-                        <span>💸</span> خطة الدفع والتسوية الذكية (مين يدفع لمين؟)
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-indigo-100 dark:border-indigo-800/50 bg-indigo-50/10 dark:bg-indigo-900/10 transition-colors">
+                    <h2 class="text-xl font-semibold text-indigo-900 dark:text-indigo-300 mb-4 flex items-center gap-2">
+                        <span>💸</span> خطة الدفع والتسوية
                     </h2>
                     <div id="paymentPlanList" class="space-y-3"></div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow border border-amber-200 bg-amber-50/5">
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-amber-200 dark:border-amber-800/50 bg-amber-50/5 dark:bg-amber-900/10 transition-colors">
                     <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                        <h2 class="text-xl font-semibold text-amber-900 flex items-center gap-2">
-                            <span>📊</span> التقرير الإحصائي والتفصيلي للرحلة
+                        <h2 class="text-xl font-semibold text-amber-900 dark:text-amber-500 flex items-center gap-2">
+                            <span>📊</span> التقرير الإحصائي والتفصيلي
                         </h2>
                         <button onclick="copyReportToClipboard()"
                             class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition cursor-pointer shadow-sm flex items-center gap-1">
-                            📋 نسخ التقرير العام لواتساب
+                            📋 نسخ التقرير العام
                         </button>
                     </div>
                     <div id="tripReportContentBox" class="space-y-4"></div>
@@ -290,20 +326,41 @@
 
         </div>
 
-        <div id="noTripsWarning" class="bg-white p-12 text-center rounded-xl shadow border border-gray-200 mt-4">
-            <p class="text-gray-400 text-lg italic mb-2">👋 أهلاً بك في النظام السحابي المشترك!</p>
-            <p class="text-blue-600 font-medium text-sm">قم بإنشاء رحلة جديدة على اليمين لتبدأ، أو أدخل كود رحلة أصدقائك
-                على اليسار للانضمام إليهم فوراً.</p>
+        <div id="noTripsWarning"
+            class="bg-white dark:bg-gray-800 p-12 text-center rounded-xl shadow border border-gray-200 dark:border-gray-700 mt-4 transition-colors">
+            <p class="text-gray-400 text-lg italic mb-2">👋 أهلاً في النظام السحابي المشترك</p>
+            <p class="text-blue-600 dark:text-blue-400 font-medium text-sm">يمكن إنشاء رحلة جديدة أو إدخال كود رحلة
+                للانضمام.</p>
         </div>
 
     </div>
 
-    <!-- استدعاء الفايربيس الحديث من السيرفر مباشرة كـ Module -->
+    <style>
+        /* إضافة خصائص لشريط التمرير في الوضع الليلي */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background-color: #475569;
+            }
+        }
+    </style>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // الـ Config الحقيقي بتاعك
         const firebaseConfig = {
             apiKey: "AIzaSyDkgvi4WXRl9DXgEml1x5JNypEJW5j5LPc",
             authDomain: "tripexpensesapp.firebaseapp.com",
@@ -314,11 +371,9 @@
             measurementId: "G-KLBDSHSCJ6"
         };
 
-        // تهيئة الـ SDK وقاعدة بيانات Firestore
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // متغيرات النظام العامة لربط الشاشة بالبيانات
         let trips = [];
         let activeTripId = null;
         let editingExpenseId = null;
@@ -327,7 +382,6 @@
         let currentExpenseMode = 'simple';
         let tempInvoiceItems = [];
 
-        // تشغيل التطبيق وجلب الذاكرة المحلية عند بدء التحميل
         window.addEventListener('DOMContentLoaded', () => {
             const storedTrips = localStorage.getItem('app_trips_data');
             const storedActiveId = localStorage.getItem('app_active_trip_id');
@@ -343,7 +397,6 @@
             }
         });
 
-        // دالة الاستماع والربط السحابي اللحظي بالـ Firestore
         function listenToActiveTripCloud() {
             if (unsubscribeActiveTrip) unsubscribeActiveTrip();
 
@@ -352,7 +405,6 @@
                 return;
             }
 
-            // مراقبة الديكيومنت المخصص للرحلة داخل كوليكشن "trips"
             unsubscribeActiveTrip = onSnapshot(doc(db, "trips", activeTripId), (docSnap) => {
                 if (docSnap.exists()) {
                     const cloudData = docSnap.data();
@@ -375,23 +427,47 @@
                     refreshActiveTripUI();
                 }
             }, (error) => {
-                console.error("خطأ في المزامنة السحابية:", error);
+                console.error("حدث خطأ في المزامنة:", error);
             });
         }
 
         function saveTripToCloud(trip) {
             if (!trip) return;
-            // رفع وحفظ التحديثات مباشرة للـ Cloud Firestore
             setDoc(doc(db, "trips", trip.id), trip)
-                .catch(err => console.error("فشل رفع البيانات للسحابة:", err));
+                .catch(err => console.error("فشل رفع البيانات:", err));
         }
 
         function clearLocalTracking() {
-            if (confirm('هل تود مسح قائمة اختصارات الرحلات المحفوظة على هذا المتصفح؟ (البيانات ستبقى آمنة في السحابة)')) {
+            if (confirm('تأكيد مسح قائمة الاختصارات من هذا المتصفح؟ (البيانات ستبقى في السحابة)')) {
                 localStorage.clear();
                 trips = [];
                 activeTripId = null;
                 if (unsubscribeActiveTrip) unsubscribeActiveTrip();
+                updateTripsDropdown();
+                refreshActiveTripUI();
+            }
+        }
+
+        function deleteCurrentTrip() {
+            if (!activeTripId) return;
+            if (!confirm('تأكيد إزالة الرحلة الحالية من الجهاز؟')) return;
+
+            trips = trips.filter(t => t.id !== activeTripId);
+            localStorage.setItem('app_trips_data', JSON.stringify(trips));
+
+            if (unsubscribeActiveTrip) {
+                unsubscribeActiveTrip();
+                unsubscribeActiveTrip = null;
+            }
+
+            activeTripId = trips.length > 0 ? trips[0].id : null;
+
+            if (activeTripId) {
+                localStorage.setItem('app_active_trip_id', activeTripId);
+                updateTripsDropdown();
+                listenToActiveTripCloud();
+            } else {
+                localStorage.removeItem('app_active_trip_id');
                 updateTripsDropdown();
                 refreshActiveTripUI();
             }
@@ -407,14 +483,14 @@
             const name = nameInput.value.trim();
             const desc = descInput.value.trim();
 
-            if (!name) return alert('يرجى إدخل اسم الرحلة أولاً');
+            if (!name) return alert('الرجاء إدخال اسم الرحلة');
 
             const shortCode = 'R' + Math.floor(100000 + Math.random() * 900000);
 
             const newTrip = {
                 id: shortCode,
                 name: name,
-                description: desc || 'لا يوجد وصف إضافي',
+                description: desc || 'لا يوجد وصف',
                 members: [],
                 expenses: []
             };
@@ -436,7 +512,7 @@
             const codeInput = document.getElementById('joinTripCodeInput');
             const code = codeInput.value.trim().toUpperCase();
 
-            if (!code) return alert('يرجى إدخال الكود المشترك أولاً');
+            if (!code) return alert('الرجاء إدخال الكود');
 
             getDoc(doc(db, "trips", code)).then((docSnap) => {
                 if (docSnap.exists()) {
@@ -451,12 +527,12 @@
                     codeInput.value = '';
                     updateTripsDropdown();
                     listenToActiveTripCloud();
-                    alert(`🎉 نجح الاتصال! تم الانضمام لرحلة: ${data.name}`);
+                    alert(`تم الانضمام بنجاح لرحلة: ${data.name}`);
                 } else {
-                    alert('❌ عفواً، هذا الكود غير موجود بقاعدة البيانات، تأكد من صحة الحروف والأرقام.');
+                    alert('الكود غير صحيح أو الرحلة غير موجودة.');
                 }
             }).catch(err => {
-                alert('حدث خطأ أثناء فحص البيانات: ' + err.message);
+                alert('حدث خطأ: ' + err.message);
             });
         }
 
@@ -465,7 +541,7 @@
             select.innerHTML = '';
 
             if (trips.length === 0) {
-                select.innerHTML = '<option value="">لا توجد رحلات محفوظة...</option>';
+                select.innerHTML = '<option value="">لا توجد رحلات...</option>';
                 return;
             }
 
@@ -507,11 +583,16 @@
             infoBox.classList.remove('hidden');
 
             infoBox.innerHTML = `
-                <div>
-                    <strong>وصف الرحلة الحالية:</strong> ${currentTrip.description || 'بدون وصف'}
+                <div class="flex-1">
+                    <strong>الوصف:</strong> ${currentTrip.description || 'بدون وصف'}
                 </div>
-                <div class="bg-blue-600 text-white font-mono px-3 py-1.5 rounded-lg font-bold text-center select-all cursor-pointer shadow-sm shrink-0" title="اضغط لنسخ الكود وإرساله لأصدقائك">
-                    🔑 كود المشاركة الجماعي: ${currentTrip.id}
+                <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                    <div class="bg-blue-600 text-white font-mono px-3 py-1.5 rounded-lg font-bold text-center select-all cursor-pointer shadow-sm shrink-0" title="نسخ الكود">
+                        🔑 الكود: ${currentTrip.id}
+                    </div>
+                    <button onclick="deleteCurrentTrip()" class="bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-rose-200 dark:hover:bg-rose-800 transition cursor-pointer shadow-sm shrink-0">
+                        🗑️ إزالة من الجهاز
+                    </button>
                 </div>
             `;
 
@@ -530,9 +611,9 @@
             const name = nameInput.value.trim();
             const phone = phoneInput.value.trim();
 
-            if (!name) return alert('يرجى إدخال اسم صحيح للشخص');
+            if (!name) return alert('الرجاء إدخال الاسم');
             if (!currentTrip.members) currentTrip.members = [];
-            if (currentTrip.members.some(m => m.name === name)) return alert('هذا الاسم مسجل بالفعل!');
+            if (currentTrip.members.some(m => m.name === name)) return alert('هذا الاسم مسجل مسبقاً');
 
             currentTrip.members.push({ name: name, phone: phone });
             nameInput.value = '';
@@ -541,15 +622,63 @@
             saveTripToCloud(currentTrip);
         }
 
+        function editMember(oldName) {
+            const currentTrip = getActiveTrip();
+            if (!currentTrip) return;
+
+            const newName = prompt(`تعديل اسم العضو (${oldName}) إلى:`, oldName);
+            if (!newName) return;
+
+            const trimmedName = newName.trim();
+            if (!trimmedName || trimmedName === oldName) return;
+
+            if (currentTrip.members.some(m => m.name === trimmedName)) {
+                return alert('هذا الاسم مسجل مسبقاً في قائمة الأفراد.');
+            }
+
+            const memberIndex = currentTrip.members.findIndex(m => m.name === oldName);
+            if (memberIndex !== -1) {
+                currentTrip.members[memberIndex].name = trimmedName;
+            }
+
+            if (currentTrip.expenses) {
+                currentTrip.expenses.forEach(exp => {
+                    if (exp.paidBy === oldName) {
+                        exp.paidBy = trimmedName;
+                    }
+                    if (exp.shares && exp.shares[oldName] !== undefined) {
+                        exp.shares[trimmedName] = exp.shares[oldName];
+                        delete exp.shares[oldName];
+                    }
+                    if (exp.isInvoice && exp.invoiceItems) {
+                        exp.invoiceItems.forEach(item => {
+                            const idx = item.members.indexOf(oldName);
+                            if (idx !== -1) {
+                                item.members[idx] = trimmedName;
+                            }
+                        });
+                    }
+                });
+            }
+
+            saveTripToCloud(currentTrip);
+            refreshActiveTripUI();
+        }
+
         function updateMembersListUI(trip) {
             const container = document.getElementById('membersList');
             container.innerHTML = '';
             trip.members.forEach(member => {
                 const div = document.createElement('div');
-                div.className = "bg-blue-50 text-blue-900 text-xs font-semibold px-3 py-1.5 rounded-lg flex flex-wrap justify-between items-center border border-blue-100 gap-2 w-full";
+                div.className = "bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100 text-xs font-semibold px-3 py-1.5 rounded-lg flex flex-wrap justify-between items-center border border-blue-100 dark:border-blue-800/50 gap-2 w-full";
                 div.innerHTML = `
-                  <span class="truncate max-w-[150px]">👤 ${member.name}</span>
-                  <span class="text-gray-400 font-mono text-[11px] shrink-0">${member.phone || 'بدون هاتف'}</span>
+                  <div class="flex items-center gap-2 overflow-hidden flex-1">
+                    <span class="truncate max-w-[120px]">👤 ${member.name}</span>
+                    <span class="text-gray-400 dark:text-gray-500 font-mono text-[11px] shrink-0">${member.phone || 'بدون هاتف'}</span>
+                  </div>
+                  <button onclick="editMember('${member.name}')" class="bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700 text-blue-700 dark:text-blue-200 px-2 py-1 rounded text-[10px] font-bold cursor-pointer shrink-0 transition shadow-sm">
+                    ✏️ تعديل
+                  </button>
                 `;
                 container.appendChild(div);
             });
@@ -557,7 +686,7 @@
 
         function updateExpensePayerDropdown(trip) {
             const select = document.getElementById('expensePayer');
-            select.innerHTML = '<option value="">اختر شخصاً...</option>';
+            select.innerHTML = '<option value="">اختيار شخص...</option>';
             trip.members.forEach(member => {
                 const option = document.createElement('option');
                 option.value = member.name;
@@ -571,18 +700,18 @@
             container.innerHTML = '';
 
             if (trip.members.length === 0) {
-                container.innerHTML = '<p class="text-xs text-gray-400 p-2 italic text-center">أضف أفراداً للرحلة أولاً لتوزيع الحساب</p>';
+                container.innerHTML = '<p class="text-xs text-gray-400 p-2 italic text-center">الرجاء إضافة أفراد أولاً</p>';
                 return;
             }
 
             trip.members.forEach(member => {
                 const div = document.createElement('div');
-                div.className = "flex items-center gap-2 bg-white p-2 rounded-md border border-gray-200 text-xs shadow-sm";
+                div.className = "flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-md border border-gray-200 dark:border-gray-700 text-xs shadow-sm";
                 div.innerHTML = `
-                  <input type="checkbox" id="check_${member.name}" checked class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer">
-                  <label for="check_${member.name}" class="flex-1 font-medium text-gray-700 cursor-pointer select-none truncate">${member.name}</label>
-                  <input type="number" id="share_${member.name}" placeholder="0.00" min="0" step="any" class="w-24 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-center font-bold text-gray-800 shrink-0">
-                  <span class="text-gray-400 shrink-0">جنيه</span>
+                  <input type="checkbox" id="check_${member.name}" checked class="rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer">
+                  <label for="check_${member.name}" class="flex-1 font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none truncate">${member.name}</label>
+                  <input type="number" id="share_${member.name}" placeholder="0.00" min="0" step="any" class="w-24 px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded focus:outline-none focus:border-blue-500 text-center font-bold shrink-0">
+                  <span class="text-gray-400 dark:text-gray-500 shrink-0">جنيه</span>
                 `;
                 container.appendChild(div);
             });
@@ -592,14 +721,14 @@
             const box = document.getElementById('invoiceItemMembersBox');
             box.innerHTML = '';
             if (trip.members.length === 0) {
-                box.innerHTML = '<span class="text-gray-400 italic">برجاء تسجيل أفراد للرحلة أولاً</span>';
+                box.innerHTML = '<span class="text-gray-400 italic">الرجاء إضافة أفراد أولاً</span>';
                 return;
             }
             trip.members.forEach(member => {
                 const label = document.createElement('label');
-                label.className = "flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md cursor-pointer select-none hover:bg-gray-200 transition text-[11px]";
+                label.className = "flex items-center gap-1 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md cursor-pointer select-none hover:bg-gray-200 dark:hover:bg-gray-600 transition text-[11px] text-gray-700 dark:text-gray-300";
                 label.innerHTML = `
-                    <input type="checkbox" value="${member.name}" name="invoiceMemberItemCheckbox" checked class="w-3.5 h-3.5 rounded text-blue-600">
+                    <input type="checkbox" value="${member.name}" name="invoiceMemberItemCheckbox" checked class="w-3.5 h-3.5 rounded bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-blue-600">
                     <span>${member.name}</span>
                 `;
                 box.appendChild(label);
@@ -614,13 +743,13 @@
             const invoiceWrapper = document.getElementById('invoiceExpenseWrapper');
 
             if (mode === 'simple') {
-                tabSimple.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md bg-white text-blue-600 shadow-sm cursor-pointer transition";
-                tabInvoice.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md text-gray-600 cursor-pointer transition";
+                tabSimple.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm cursor-pointer transition";
+                tabInvoice.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md text-gray-600 dark:text-gray-400 cursor-pointer transition";
                 simpleWrapper.classList.remove('hidden');
                 invoiceWrapper.classList.add('hidden');
             } else {
-                tabInvoice.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md bg-white text-blue-600 shadow-sm cursor-pointer transition";
-                tabSimple.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md text-gray-600 cursor-pointer transition";
+                tabInvoice.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm cursor-pointer transition";
+                tabSimple.className = "flex-1 text-center py-1.5 text-xs font-bold rounded-md text-gray-600 dark:text-gray-400 cursor-pointer transition";
                 invoiceWrapper.classList.remove('hidden');
                 simpleWrapper.classList.add('hidden');
                 updateInvoiceLiveSummary();
@@ -633,13 +762,13 @@
             const itemName = nameInp.value.trim();
             const itemPrice = parseFloat(priceInp.value);
 
-            if (!itemName) return alert('يرجى كتابة اسم الصنف');
-            if (isNaN(itemPrice) || itemPrice <= 0) return alert('يرجى كتابة سعر صحيح');
+            if (!itemName) return alert('الرجاء كتابة اسم الصنف');
+            if (isNaN(itemPrice) || itemPrice <= 0) return alert('الرجاء إدخال سعر صحيح');
 
             const checkedBoxes = document.querySelectorAll('input[name="invoiceMemberItemCheckbox"]:checked');
             const selectedMembers = Array.from(checkedBoxes).map(cb => cb.value);
 
-            if (selectedMembers.length === 0) return alert('يجب تحديد شخص واحد على الأقل مشترك في هذا البند!');
+            if (selectedMembers.length === 0) return alert('يجب تحديد مشارك واحد على الأقل');
 
             tempInvoiceItems.push({
                 id: 'item_' + Date.now() + Math.random().toString(36).substr(2, 4),
@@ -666,21 +795,21 @@
             container.innerHTML = '';
 
             if (tempInvoiceItems.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 italic p-1 text-center">لا توجد بنود مدرجة حتى الآن.</p>';
+                container.innerHTML = '<p class="text-gray-400 italic p-1 text-center">لا توجد بنود حالياً</p>';
                 return;
             }
 
             tempInvoiceItems.forEach(item => {
                 const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-white p-1.5 rounded border border-gray-200 gap-1";
+                div.className = "flex justify-between items-center bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-200 dark:border-gray-700 gap-1";
                 div.innerHTML = `
                     <div class="truncate flex-1">
-                        <strong class="text-gray-800 font-bold">${item.name}</strong> 
-                        <span class="text-[10px] text-gray-500 block truncate">مشترك: ${item.members.join('، ')}</span>
+                        <strong class="text-gray-800 dark:text-gray-200 font-bold">${item.name}</strong> 
+                        <span class="text-[10px] text-gray-500 dark:text-gray-400 block truncate">مشاركة: ${item.members.join('، ')}</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-bold text-blue-600 font-mono">${item.price.toFixed(2)} ج</span>
-                        <button type="button" onclick="removeInvoiceItemFromArray('${item.id}')" class="text-rose-600 hover:text-rose-800 text-[11px] font-bold cursor-pointer">❌</button>
+                        <span class="font-bold text-blue-600 dark:text-blue-400 font-mono">${item.price.toFixed(2)} ج</span>
+                        <button type="button" onclick="removeInvoiceItemFromArray('${item.id}')" class="text-rose-600 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 text-[11px] font-bold cursor-pointer">❌</button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -689,26 +818,30 @@
 
         function updateInvoiceLiveSummary() {
             let subtotal = tempInvoiceItems.reduce((sum, item) => sum + item.price, 0);
+            let discountPercent = parseFloat(document.getElementById('invoiceDiscountPercent').value) || 0;
             let servicePercent = parseFloat(document.getElementById('invoiceServicePercent').value) || 0;
             let vatPercent = parseFloat(document.getElementById('invoiceVatPercent').value) || 0;
 
-            let serviceCost = subtotal * (servicePercent / 100);
-            let vatCost = (subtotal + serviceCost) * (vatPercent / 100);
-            let grandTotal = subtotal + serviceCost + vatCost;
+            let discountCost = subtotal * (discountPercent / 100);
+            let afterDiscount = subtotal - discountCost;
+            let serviceCost = afterDiscount * (servicePercent / 100);
+            let vatCost = (afterDiscount + serviceCost) * (vatPercent / 100);
+            let grandTotal = afterDiscount + serviceCost + vatCost;
 
             document.getElementById('lblInvoiceSubtotal').textContent = `${subtotal.toFixed(2)} ج.م`;
+            document.getElementById('lblInvoiceDiscountCost').textContent = `-${discountCost.toFixed(2)} ج.م`;
             document.getElementById('lblInvoiceServiceCost').textContent = `${serviceCost.toFixed(2)} ج.م`;
             document.getElementById('lblInvoiceVatCost').textContent = `${vatCost.toFixed(2)} ج.م`;
-            document.getElementById('lblInvoiceGrandTotal').textContent = `${grandTotal.toFixed(2)} ج.m`;
+            document.getElementById('lblInvoiceGrandTotal').textContent = `${grandTotal.toFixed(2)} ج.م`;
         }
 
         function distributeEqually() {
             const currentTrip = getActiveTrip();
             const totalAmount = parseFloat(document.getElementById('expenseAmount').value);
-            if (isNaN(totalAmount) || totalAmount <= 0) return alert('أدخل إجمالي مبلغ الشراء أولاً');
+            if (isNaN(totalAmount) || totalAmount <= 0) return alert('الرجاء إدخال الإجمالي أولاً');
 
             const checkedMembers = currentTrip.members.filter(m => document.getElementById(`check_${m.name}`).checked);
-            if (checkedMembers.length === 0) return alert('حدد شخصاً واحداً على الأقل مشاركاً');
+            if (checkedMembers.length === 0) return alert('يجب تحديد مشارك واحد على الأقل');
 
             const equalShare = totalAmount / checkedMembers.length;
 
@@ -724,8 +857,8 @@
             const payer = document.getElementById('expensePayer').value;
             const desc = document.getElementById('expenseDesc').value.trim();
 
-            if (!payer) return alert('اختر الشخص الذي قام بالدفع');
-            if (!desc) return alert('اكتب تفاصيل أو وصف عملية الشراء');
+            if (!payer) return alert('الرجاء اختيار الشخص الذي دفع');
+            if (!desc) return alert('الرجاء إدخال البيان');
 
             let finalAmount = 0;
             let expenseShares = {};
@@ -733,7 +866,7 @@
 
             if (!isInvoiceMode) {
                 finalAmount = parseFloat(document.getElementById('expenseAmount').value);
-                if (isNaN(finalAmount) || finalAmount <= 0) return alert('أدخل مبلغاً صحيحاً أكبر من الصفر');
+                if (isNaN(finalAmount) || finalAmount <= 0) return alert('الرجاء إدخال مبلغ صحيح');
 
                 let sumOfShares = 0;
                 for (let member of currentTrip.members) {
@@ -748,18 +881,21 @@
                 }
 
                 if (Math.abs(sumOfShares - finalAmount) > 0.5) {
-                    return alert(`خطأ! مجموع الحصص لا يساوي الإجمالي.`);
+                    return alert(`خطأ: مجموع الحصص لا يساوي الإجمالي`);
                 }
             } else {
-                if (tempInvoiceItems.length === 0) return alert('يرجى إضافة بند واحد على الأقل داخل الفاتورة!');
+                if (tempInvoiceItems.length === 0) return alert('الرجاء إدراج بند للفاتورة');
 
                 let subtotal = tempInvoiceItems.reduce((sum, item) => sum + item.price, 0);
+                let discountPercent = parseFloat(document.getElementById('invoiceDiscountPercent').value) || 0;
                 let servicePercent = parseFloat(document.getElementById('invoiceServicePercent').value) || 0;
                 let vatPercent = parseFloat(document.getElementById('invoiceVatPercent').value) || 0;
 
-                let serviceCost = subtotal * (servicePercent / 100);
-                let vatCost = (subtotal + serviceCost) * (vatPercent / 100);
-                finalAmount = subtotal + serviceCost + vatCost;
+                let discountCost = subtotal * (discountPercent / 100);
+                let afterDiscount = subtotal - discountCost;
+                let serviceCost = afterDiscount * (servicePercent / 100);
+                let vatCost = (afterDiscount + serviceCost) * (vatPercent / 100);
+                finalAmount = afterDiscount + serviceCost + vatCost;
 
                 let baseShares = {};
                 currentTrip.members.forEach(m => baseShares[m.name] = 0);
@@ -771,12 +907,12 @@
                     });
                 });
 
-                let inflationFactor = finalAmount / subtotal;
+                let inflationFactor = subtotal > 0 ? (finalAmount / subtotal) : 1;
                 let calculatedSum = 0;
 
                 currentTrip.members.forEach(m => {
-                    let shareWithTax = baseShares[m.name] * inflationFactor;
-                    expenseShares[m.name] = parseFloat(shareWithTax.toFixed(2));
+                    let shareWithTaxAndDiscount = baseShares[m.name] * inflationFactor;
+                    expenseShares[m.name] = parseFloat(shareWithTaxAndDiscount.toFixed(2));
                     calculatedSum += expenseShares[m.name];
                 });
 
@@ -800,6 +936,7 @@
                     currentTrip.expenses[expIndex].shares = expenseShares;
                     currentTrip.expenses[expIndex].isInvoice = isInvoiceMode;
                     currentTrip.expenses[expIndex].invoiceItems = isInvoiceMode ? tempInvoiceItems : [];
+                    currentTrip.expenses[expIndex].discountPercent = isInvoiceMode ? parseFloat(document.getElementById('invoiceDiscountPercent').value) : 0;
                     currentTrip.expenses[expIndex].servicePercent = isInvoiceMode ? parseFloat(document.getElementById('invoiceServicePercent').value) : 0;
                     currentTrip.expenses[expIndex].vatPercent = isInvoiceMode ? parseFloat(document.getElementById('invoiceVatPercent').value) : 0;
                 }
@@ -817,6 +954,7 @@
                     shares: expenseShares,
                     isInvoice: isInvoiceMode,
                     invoiceItems: isInvoiceMode ? tempInvoiceItems : [],
+                    discountPercent: isInvoiceMode ? parseFloat(document.getElementById('invoiceDiscountPercent').value) : 0,
                     servicePercent: isInvoiceMode ? parseFloat(document.getElementById('invoiceServicePercent').value) : 0,
                     vatPercent: isInvoiceMode ? parseFloat(document.getElementById('invoiceVatPercent').value) : 0
                 });
@@ -833,9 +971,9 @@
 
             editingExpenseId = id;
 
-            document.getElementById('expenseCardTitle').innerHTML = `<span>✏️</span> تعديل المصروف المالي`;
+            document.getElementById('expenseCardTitle').innerHTML = `<span>✏️</span> تعديل المصروف`;
             const submitBtn = document.getElementById('submitExpenseBtn');
-            submitBtn.textContent = 'تحديث المصروف ✏️';
+            submitBtn.textContent = 'تحديث التعديل ✏️';
             document.getElementById('cancelEditBtn').classList.remove('hidden');
 
             document.getElementById('expensePayer').value = expense.paidBy;
@@ -844,6 +982,7 @@
             if (expense.isInvoice) {
                 switchExpenseMode('invoice');
                 tempInvoiceItems = expense.invoiceItems ? [...expense.invoiceItems] : [];
+                document.getElementById('invoiceDiscountPercent').value = expense.discountPercent || 0;
                 document.getElementById('invoiceServicePercent').value = expense.servicePercent || 0;
                 document.getElementById('invoiceVatPercent').value = expense.vatPercent || 0;
                 renderTemporaryInvoiceItemsListUI();
@@ -878,7 +1017,7 @@
         }
 
         function deleteExpense(id) {
-            if (!confirm('هل أنت متأكد من الحذف؟')) return;
+            if (!confirm('تأكيد الحذف؟')) return;
 
             const currentTrip = getActiveTrip();
             currentTrip.expenses = currentTrip.expenses.filter(e => e.id !== id);
@@ -890,7 +1029,7 @@
         }
 
         function resetExpenseForm(trip) {
-            document.getElementById('expenseCardTitle').innerHTML = `<span>💰</span> تسجيل حركة مصروفات جديدة`;
+            document.getElementById('expenseCardTitle').innerHTML = `<span>💰</span> تسجيل مصروف جديد`;
             const submitBtn = document.getElementById('submitExpenseBtn');
             submitBtn.textContent = 'تسجيل الحساب';
             document.getElementById('cancelEditBtn').classList.add('hidden');
@@ -902,6 +1041,7 @@
             tempInvoiceItems = [];
             document.getElementById('invoiceItemName').value = '';
             document.getElementById('invoiceItemPrice').value = '';
+            document.getElementById('invoiceDiscountPercent').value = '0';
             document.getElementById('invoiceServicePercent').value = '12';
             document.getElementById('invoiceVatPercent').value = '14';
             renderTemporaryInvoiceItemsListUI();
@@ -922,7 +1062,7 @@
             tbody.innerHTML = '';
 
             if (!trip.expenses || trip.expenses.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400 italic">لا توجد أي مصروفات مسجلة.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400 dark:text-gray-500 italic">لا توجد مصروفات مسجلة</td></tr>`;
                 return;
             }
 
@@ -932,20 +1072,20 @@
                     .map(name => `${name} (${exp.shares[name].toFixed(0)})`)
                     .join('، ');
 
-                let badgeMarkup = exp.isInvoice ? '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1">🧾 فاتورة</span>' : '';
+                let badgeMarkup = exp.isInvoice ? '<span class="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1">🧾 فاتورة</span>' : '';
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50 transition-colors text-xs md:text-sm";
+                tr.className = "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-xs md:text-sm border-b border-gray-100 dark:border-gray-700 last:border-0";
                 tr.innerHTML = `
-                  <td class="px-4 py-3 text-gray-400 text-xs font-mono font-medium">${exp.dateTime}</td>
-                  <td class="px-4 py-3 font-semibold text-gray-900">${exp.paidBy}</td>
-                  <td class="px-4 py-3 text-gray-600 font-medium">${badgeMarkup} ${exp.description}</td>
-                  <td class="px-4 py-3 text-gray-400 text-xs max-w-xs truncate" title="${splitDetails}">${splitDetails}</td>
-                  <td class="px-4 py-3 text-emerald-600 font-bold">${exp.amount.toFixed(2)} ج.م</td>
+                  <td class="px-4 py-3 text-gray-400 dark:text-gray-500 text-xs font-mono font-medium">${exp.dateTime}</td>
+                  <td class="px-4 py-3 font-semibold text-gray-900 dark:text-gray-200">${exp.paidBy}</td>
+                  <td class="px-4 py-3 text-gray-600 dark:text-gray-300 font-medium">${badgeMarkup} ${exp.description}</td>
+                  <td class="px-4 py-3 text-gray-400 dark:text-gray-400 text-xs max-w-xs truncate" title="${splitDetails}">${splitDetails}</td>
+                  <td class="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-bold">${exp.amount.toFixed(2)} ج.م</td>
                   <td class="px-4 py-3 text-center">
                     <div class="flex justify-center gap-3">
-                      <button onclick="startEditExpense('${exp.id}')" class="text-blue-600 hover:text-blue-800 font-medium cursor-pointer text-xs">✏️</button>
-                      <button onclick="deleteExpense('${exp.id}')" class="text-rose-600 hover:text-rose-800 font-medium cursor-pointer text-xs">🗑️</button>
+                      <button onclick="startEditExpense('${exp.id}')" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium cursor-pointer text-xs">✏️</button>
+                      <button onclick="deleteExpense('${exp.id}')" class="text-rose-600 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 font-medium cursor-pointer text-xs">🗑️</button>
                     </div>
                   </td>
                 `;
@@ -966,9 +1106,9 @@
             totalInvoicesEl.textContent = trip.expenses.length;
 
             if (trip.members.length === 0) {
-                settlementList.innerHTML = `<p class="text-gray-400 italic text-sm text-center py-4">أضف أفراداً أولاً لعرض الحسابات.</p>`;
-                paymentPlanList.innerHTML = `<p class="text-gray-400 italic text-sm text-center py-4">سيتم توليد خطة التسوية هنا.</p>`;
-                document.getElementById('tripReportContentBox').innerHTML = `<p class="text-gray-400 italic text-sm text-center py-4">أضف أفراداً أولاً لتوليد التقرير.</p>`;
+                settlementList.innerHTML = `<p class="text-gray-400 dark:text-gray-500 italic text-sm text-center py-4">الرجاء إضافة أفراد</p>`;
+                paymentPlanList.innerHTML = `<p class="text-gray-400 dark:text-gray-500 italic text-sm text-center py-4">خطة التسوية ستظهر هنا</p>`;
+                document.getElementById('tripReportContentBox').innerHTML = `<p class="text-gray-400 dark:text-gray-500 italic text-sm text-center py-4">الرجاء إضافة أفراد لتوليد التقرير</p>`;
                 return;
             }
 
@@ -987,24 +1127,24 @@
                 memberBalances.push({ name: member.name, balance: balance, paid: totalPaidByMember, owed: totalOwedByMember });
 
                 const div = document.createElement('div');
-                div.className = "p-3 rounded-lg flex justify-between items-center text-sm font-medium border";
+                div.className = "p-3 rounded-lg flex justify-between items-center text-sm font-medium border transition-colors";
 
                 if (balance > 0.01) {
-                    div.className += " bg-emerald-50 border-emerald-100 text-emerald-800";
+                    div.className += " bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300";
                     div.innerHTML = `
-            <span>👤 ${member.name} <span class="text-xs text-gray-500 font-normal mr-2">(دفع: ${totalPaidByMember.toFixed(0)} | نصيبه: ${totalOwedByMember.toFixed(0)})</span></span> 
-            <span class="text-emerald-700 font-bold">ليه: ${balance.toFixed(2)} جنيه</span>
+            <span>👤 ${member.name} <span class="text-xs text-emerald-600/70 dark:text-emerald-400/70 font-normal mr-2">(دفع: ${totalPaidByMember.toFixed(0)} | الحصة: ${totalOwedByMember.toFixed(0)})</span></span> 
+            <span class="text-emerald-700 dark:text-emerald-400 font-bold">له: ${balance.toFixed(2)} جنيه</span>
           `;
                 } else if (balance < -0.01) {
-                    div.className += " bg-rose-50 border-rose-100 text-rose-800";
+                    div.className += " bg-rose-50 dark:bg-rose-900/20 border-rose-100 dark:border-rose-800/50 text-rose-800 dark:text-rose-300";
                     div.innerHTML = `
-            <span>👤 ${member.name} <span class="text-xs text-gray-500 font-normal mr-2">(دفع: ${totalPaidByMember.toFixed(0)} | نصيبه: ${totalOwedByMember.toFixed(0)})</span></span> 
-            <span class="text-rose-700 font-bold">عليه: ${Math.abs(balance).toFixed(2)} جنيه</span>
+            <span>👤 ${member.name} <span class="text-xs text-rose-600/70 dark:text-rose-400/70 font-normal mr-2">(دفع: ${totalPaidByMember.toFixed(0)} | الحصة: ${totalOwedByMember.toFixed(0)})</span></span> 
+            <span class="text-rose-700 dark:text-rose-400 font-bold">عليه: ${Math.abs(balance).toFixed(2)} جنيه</span>
           `;
                 } else {
-                    div.className += " bg-gray-50 border-gray-200 text-gray-600";
+                    div.className += " bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400";
                     div.innerHTML = `
-            <span>👤 ${member.name}</span> <span class="text-gray-400">خالص تماماً ⚪</span>
+            <span>👤 ${member.name}</span> <span class="text-gray-400 dark:text-gray-500">خالص تماماً ⚪</span>
           `;
                 }
                 settlementList.appendChild(div);
@@ -1021,7 +1161,7 @@
             let creditors = balances.filter(x => x.balance > 0.01).map(x => ({ name: x.name, amount: x.balance }));
 
             if (debtors.length === 0 && creditors.length === 0) {
-                container.innerHTML = `<p class="text-emerald-700 italic text-sm text-center py-2 font-medium">🎉 كل الحسابات خالصة تماماً!</p>`;
+                container.innerHTML = `<p class="text-emerald-700 dark:text-emerald-400 italic text-sm text-center py-2 font-medium">🎉 الحسابات مكتملة تماماً!</p>`;
                 return;
             }
 
@@ -1033,14 +1173,14 @@
 
                 if (payment > 0.01) {
                     const planDiv = document.createElement('div');
-                    planDiv.className = "p-3 bg-white border border-indigo-100 rounded-lg flex justify-between items-center text-sm shadow-sm";
+                    planDiv.className = "p-3 bg-white dark:bg-gray-800 border border-indigo-100 dark:border-indigo-800/50 rounded-lg flex justify-between items-center text-sm shadow-sm transition-colors";
                     planDiv.innerHTML = `
             <div class="flex items-center gap-2">
-              <span class="font-bold text-rose-700">${debtor.name}</span>
-              <span class="text-gray-400 text-xs">يدفع إلى</span>
-              <span class="font-bold text-emerald-700">${creditor.name}</span>
+              <span class="font-bold text-rose-700 dark:text-rose-400">${debtor.name}</span>
+              <span class="text-gray-400 dark:text-gray-500 text-xs">يدفع إلى</span>
+              <span class="font-bold text-emerald-700 dark:text-emerald-400">${creditor.name}</span>
             </div>
-            <div class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-md border border-indigo-100">
+            <div class="font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1 rounded-md border border-indigo-100 dark:border-indigo-800/50">
               ${payment.toFixed(2)} جنيه
             </div>
           `;
@@ -1065,21 +1205,21 @@
 
             let membersListHTML = '';
             balances.forEach(b => {
-                let textClass = b.balance > 0.01 ? 'text-emerald-600 font-bold' : (b.balance < -0.01 ? 'text-rose-600 font-bold' : 'text-gray-500');
+                let textClass = b.balance > 0.01 ? 'text-emerald-600 dark:text-emerald-400 font-bold' : (b.balance < -0.01 ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-gray-500 dark:text-gray-400');
                 let statusText = b.balance > 0.01 ? `[له: +${b.balance.toFixed(2)} ج.م]` : (b.balance < -0.01 ? `[عليه: -${Math.abs(b.balance).toFixed(2)} ج.م]` : '[خالص]');
 
                 membersListHTML += `
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs p-3 bg-white rounded-lg border border-gray-100 gap-2 hover:bg-gray-50 transition">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 gap-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
             <div class="space-y-1">
-              <span class="font-semibold text-gray-800 text-sm">👤 ${b.name}</span>
-              <div class="text-gray-500 flex flex-wrap gap-x-3 gap-y-1">
-                <span>ما دفعه: <strong class="text-gray-900">${b.paid.toFixed(1)}</strong> ج</span>
-                <span>نصيبه: <strong class="text-gray-900">${b.owed.toFixed(1)}</strong> ج</span>
+              <span class="font-semibold text-gray-800 dark:text-gray-100 text-sm">👤 ${b.name}</span>
+              <div class="text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-3 gap-y-1">
+                <span>ما تم دفعه: <strong class="text-gray-900 dark:text-gray-200">${b.paid.toFixed(1)}</strong> ج</span>
+                <span>الحصة: <strong class="text-gray-900 dark:text-gray-200">${b.owed.toFixed(1)}</strong> ج</span>
                 <span class="${textClass}">${statusText}</span>
               </div>
             </div>
             <button onclick="sendIndividualReport('${b.name}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-md transition flex items-center gap-1 text-[11px] whitespace-nowrap cursor-pointer shadow-sm">
-              💬 إرسال الكشف
+              💬 إرسال واتساب
             </button>
           </div>
         `;
@@ -1087,24 +1227,24 @@
 
             box.innerHTML = `
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="bg-gray-100/70 p-3 rounded-lg text-xs">
-            <span class="text-gray-500 block mb-1">📌 اسم الرحلة</span>
-            <span class="font-bold text-gray-800 text-sm">${trip.name}</span>
-            <p class="text-gray-500 mt-1">${trip.description}</p>
+          <div class="bg-gray-100/70 dark:bg-gray-700/50 p-3 rounded-lg text-xs transition-colors">
+            <span class="text-gray-500 dark:text-gray-400 block mb-1">📌 اسم الرحلة</span>
+            <span class="font-bold text-gray-800 dark:text-gray-100 text-sm">${trip.name}</span>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">${trip.description}</p>
           </div>
-          <div class="bg-gray-100/70 p-3 rounded-lg text-xs">
-            <span class="text-gray-500 block mb-1">💰 الحسبة الكلية</span>
-            <p class="text-gray-800 font-semibold">المصاريف: <span class="text-blue-600 font-bold">${totalExpenses.toFixed(2)} ج</span></p>
-            <p class="text-gray-800 font-semibold mt-1">متوسط الفرد: <span class="text-purple-600 font-bold">${avgShare.toFixed(2)} ج</span></p>
+          <div class="bg-gray-100/70 dark:bg-gray-700/50 p-3 rounded-lg text-xs transition-colors">
+            <span class="text-gray-500 dark:text-gray-400 block mb-1">💰 الحسبة الكلية</span>
+            <p class="text-gray-800 dark:text-gray-200 font-semibold">المصاريف: <span class="text-blue-600 dark:text-blue-400 font-bold">${totalExpenses.toFixed(2)} ج</span></p>
+            <p class="text-gray-800 dark:text-gray-200 font-semibold mt-1">متوسط الفرد: <span class="text-purple-600 dark:text-purple-400 font-bold">${avgShare.toFixed(2)} ج</span></p>
           </div>
-          <div class="bg-amber-100/50 p-3 rounded-lg text-xs border border-amber-200">
-            <span class="text-amber-700 block mb-1">👑 الأكثر إنفاقاً</span>
-            <span class="font-bold text-amber-900 text-sm">👤 ${maxSpender.name}</span>
-            <p class="text-amber-800 mt-1">أنفق: <strong class="font-bold">${maxSpender.paid.toFixed(2)} ج</strong></p>
+          <div class="bg-amber-100/50 dark:bg-amber-900/20 p-3 rounded-lg text-xs border border-amber-200 dark:border-amber-800/50 transition-colors">
+            <span class="text-amber-700 dark:text-amber-500 block mb-1">👑 الأكثر إنفاقاً</span>
+            <span class="font-bold text-amber-900 dark:text-amber-400 text-sm">👤 ${maxSpender.name}</span>
+            <p class="text-amber-800 dark:text-amber-500 mt-1">الإنفاق: <strong class="font-bold">${maxSpender.paid.toFixed(2)} ج</strong></p>
           </div>
         </div>
         <div class="space-y-2">
-          <div class="space-y-2 max-h-72 overflow-y-auto">${membersListHTML}</div>
+          <div class="space-y-2 max-h-72 overflow-y-auto custom-scrollbar">${membersListHTML}</div>
         </div>
       `;
         }
@@ -1118,12 +1258,10 @@
             const totalOwed = currentTrip.expenses.reduce((sum, exp) => sum + (exp.shares[memberName] || 0), 0);
             const balance = totalPaid - totalOwed;
 
-            let paymentsRowsHTML = ''; let usagesRowsHTML = '';
             let waPaidItems = ''; let waOwedItems = '';
 
             currentTrip.expenses.forEach(exp => {
                 if (exp.paidBy === memberName) {
-                    paymentsRowsHTML += `<tr><td style="padding:8px;">${exp.dateTime}</td><td style="padding:8px;">${exp.description}</td><td style="padding:8px;color:#059669;font-weight:bold;">${exp.amount.toFixed(2)} ج</td></tr>`;
                     waPaidItems += `  💸 ${exp.description} (${exp.amount.toFixed(1)} ج)\n`;
                 }
                 if (exp.shares[memberName] > 0) {
@@ -1132,78 +1270,81 @@
                         let innerItems = exp.invoiceItems.filter(item => item.members.includes(memberName));
                         if (innerItems.length > 0) textContext = `${exp.description} (شملت: ${innerItems.map(i => i.name).join(' + ')} + الخدمة/الضريبة)`;
                     }
-                    usagesRowsHTML += `<tr><td style="padding:8px;">${exp.dateTime}</td><td style="padding:8px;">${textContext}</td><td style="padding:8px;color:#dc2626;font-weight:bold;">${exp.shares[memberName].toFixed(2)} ج</td></tr>`;
-                    waOwedItems += `  🍽️ ${textContext} -> حصتك: (*${exp.shares[memberName].toFixed(1)} ج*)\n`;
+                    waOwedItems += `  🍽️ ${textContext} -> الحصة: (*${exp.shares[memberName].toFixed(1)} ج*)\n`;
                 }
             });
 
-            if (!waPaidItems) waPaidItems = '  - لم تقم بدفع مبالغ مباشرة.\n';
-            if (!waOwedItems) waOwedItems = '  - لم تشترك في فواتير.\n';
+            if (!waPaidItems) waPaidItems = '  - لم يتم دفع مبالغ مباشرة.\n';
+            if (!waOwedItems) waOwedItems = '  - لم يتم الاشتراك في فواتير.\n';
 
-            const pdfContainer = document.createElement('div');
-            pdfContainer.dir = 'rtl'; pdfContainer.style.padding = '30px'; pdfContainer.style.position = 'absolute'; pdfContainer.style.left = '-9999px';
-
-            let finalStatusText = balance > 0.01 ? `له باقى: ${balance.toFixed(2)} ج` : (balance < -0.01 ? `عليه مبلغ: ${Math.abs(balance).toFixed(2)} ج` : 'خالص تماماً');
-
-            pdfContainer.innerHTML = `
-                <div style="border-bottom:3px solid #2563eb;padding-bottom:10px;margin-bottom:20px;text-align:center;">
-                  <h1 style="color:#2563eb;margin:0;">📋 كشف حساب فردي تفصيلي</h1>
-                  <p style="color:#6b7280;margin:5px 0 0 0;">رحلة: <strong>${currentTrip.name}</strong></p>
-                </div>
-                <div style="background-color:#f8fafc;border:1px solid #e2e8f0;padding:15px;border-radius:8px;margin-bottom:25px;font-size:14px;">
-                  <p><strong>العضو:</strong> ${member.name}</p>
-                  <p><strong>إجمالي ما دفعه:</strong> ${totalPaid.toFixed(2)} ج</p>
-                  <p><strong>إجمالي نصيبه:</strong> ${totalOwed.toFixed(2)} ج</p>
-                  <p style="font-size:16px;font-weight:bold;color:#2563eb;margin-top:10px;">📌 الوضع المالي: ${finalStatusText}</p>
-                </div>
-                <h3>💵 الفواتير التي دفعها:</h3>
-                <table style="width:100%;border-collapse:collapse;margin-bottom:20px;" border="1">
-                    ${paymentsRowsHTML || '<tr><td style="padding:10px;text-align:center;color:#9ca3af;">لا يوجد</td></tr>'}
-                </table>
-                <h3>🍽️ الفواتير والبنود التي استهلكها:</h3>
-                <table style="width:100%;border-collapse:collapse;" border="1">
-                    ${usagesRowsHTML || '<tr><td style="padding:10px;text-align:center;color:#9ca3af;">لا يوجد</td></tr>'}
-                </table>
-            `;
-
-            document.body.appendChild(pdfContainer);
-            html2pdf().set({ margin: 15, filename: `كشف_${member.name}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { format: 'a4' } }).from(pdfContainer).save().then(() => pdfContainer.remove());
-
-            let waStatus = balance > 0.01 ? `🟢 ليك باقى: *${balance.toFixed(2)} ج*` : (balance < -0.01 ? `🔴 عليك مستحق: *${Math.abs(balance).toFixed(2)} ج*` : `⚪ حسابك خالص`);
-            let msg = `يا *${member.name}* 👋\nملخص حسابك من رحلة: *${currentTrip.name}* 🌍\n\n🛒 *تمويلك:*\n${waPaidItems}\n🍽️ *استهلاكك:*\n${waOwedItems}\n-----------------------------------------\n📌 *صافي وضعك المالي:* ${waStatus}\n-----------------------------------------\n📥 قمت بتحميل ملف الـ *PDF* بالتفاصيل على موبايلك لتبادله في الشات هنا! 👍`;
+            let waStatus = balance > 0.01 ? `🟢 مستحق للعضو: *${balance.toFixed(2)} ج*` : (balance < -0.01 ? `🔴 مطلوب من العضو: *${Math.abs(balance).toFixed(2)} ج*` : `⚪ الحساب خالص تماماً`);
+            let msg = `حساب العضو *${member.name}* 👋\nمن رحلة: *${currentTrip.name}* 🌍\n\n🛒 *التمويل:*\n${waPaidItems}\n🍽️ *الاستهلاك:*\n${waOwedItems}\n-----------------------------------------\n📌 *صافي الوضع المالي:* ${waStatus}\n-----------------------------------------`;
 
             let cleanPhone = (member.phone || '').replace(/\D/g, '');
             if (cleanPhone.startsWith('01')) cleanPhone = '20' + cleanPhone;
             let waUrl = cleanPhone ? `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
-            setTimeout(() => window.open(waUrl, '_blank'), 800);
+
+            window.open(waUrl, '_blank');
         }
 
         function copyReportToClipboard() {
             const trip = getActiveTrip();
-            if (!trip || !trip.members) return alert('لا توجد بيانات كافية!');
+            if (!trip || !trip.members) return alert('الرجاء التأكد من وجود بيانات.');
 
             const totalExpenses = trip.expenses.reduce((sum, exp) => sum + exp.amount, 0);
             const avgShare = totalExpenses / trip.members.length;
 
-            let textReport = `📊 *تقرير مصروفات رحلة: ${trip.name}* 📊\n-------------------------------------\n💰 *المصاريف الكلية:* ${totalExpenses.toFixed(2)} ج\n📊 *نصيب الفرد:* ${avgShare.toFixed(2)} ج\n-------------------------------------\n\n👥 *كشف الحسابات:*\n`;
+            let textReport = `📊 *تقرير مصروفات رحلة: ${trip.name}* 📊\n-------------------------------------\n💰 *المصاريف الكلية:* ${totalExpenses.toFixed(2)} ج\n📊 *متوسط الفرد:* ${avgShare.toFixed(2)} ج\n-------------------------------------\n\n👥 *كشف الحسابات:*\n`;
+
+            let memberBalances = [];
 
             trip.members.forEach(member => {
                 const totalPaid = trip.expenses.filter(exp => exp.paidBy === member.name).reduce((sum, exp) => sum + exp.amount, 0);
                 const totalOwed = trip.expenses.reduce((sum, exp) => sum + (exp.shares[member.name] || 0), 0);
                 const balance = totalPaid - totalOwed;
-                let status = balance > 0.01 ? `🟢 ليه: ${balance.toFixed(1)} ج` : (balance < -0.01 ? `🔴 عليه: ${Math.abs(balance).toFixed(1)} ج` : `⚪ خالص`);
-                textReport += `👤 *${member.name}* -> دفع: ${totalPaid.toFixed(0)} | نصيبه: ${totalOwed.toFixed(0)} | ${status}\n`;
+
+                memberBalances.push({ name: member.name, balance: balance, paid: totalPaid, owed: totalOwed });
+
+                let status = balance > 0.01 ? `🟢 له: ${balance.toFixed(1)} ج` : (balance < -0.01 ? `🔴 عليه: ${Math.abs(balance).toFixed(1)} ج` : `⚪ خالص`);
+                textReport += `👤 *${member.name}* -> دفع: ${totalPaid.toFixed(0)} | الحصة: ${totalOwed.toFixed(0)} | ${status}\n`;
             });
 
-            navigator.clipboard.writeText(textReport).then(() => alert('🎉 تم نسخ التقرير العام بنجاح!'));
+            // حساب خطة الدفع
+            let debtors = memberBalances.filter(x => x.balance < -0.01).map(x => ({ name: x.name, amount: Math.abs(x.balance) }));
+            let creditors = memberBalances.filter(x => x.balance > 0.01).map(x => ({ name: x.name, amount: x.balance }));
+
+            textReport += `\n💸 *خطة الدفع والتسوية:*\n`;
+
+            if (debtors.length === 0 && creditors.length === 0) {
+                textReport += `  🎉 الحسابات مكتملة تماماً!\n`;
+            } else {
+                let i = 0; let j = 0;
+                while (i < debtors.length && j < creditors.length) {
+                    let debtor = debtors[i];
+                    let creditor = creditors[j];
+                    let payment = Math.min(debtor.amount, creditor.amount);
+
+                    if (payment > 0.01) {
+                        textReport += `  🔴 ${debtor.name} ⬅️ يدفع لـ ⬅️ 🟢 ${creditor.name} : *${payment.toFixed(2)} ج*\n`;
+                    }
+
+                    debtor.amount -= payment;
+                    creditor.amount -= payment;
+                    if (debtor.amount <= 0.01) i++;
+                    if (creditor.amount <= 0.01) j++;
+                }
+            }
+
+            navigator.clipboard.writeText(textReport).then(() => alert('تم النسخ بنجاح!'));
         }
 
-        // ربط الدوال بـ Window Object لتعمل مع الـ HTML tags مباشرة بدون مشاكل الـ Scope للمديولات
         window.createNewTrip = createNewTrip;
         window.joinTripById = joinTripById;
         window.switchTrip = switchTrip;
         window.clearLocalTracking = clearLocalTracking;
+        window.deleteCurrentTrip = deleteCurrentTrip;
         window.addMember = addMember;
+        window.editMember = editMember;
         window.switchExpenseMode = switchExpenseMode;
         window.addInvoiceItemToArray = addInvoiceItemToArray;
         window.removeInvoiceItemFromArray = removeInvoiceItemFromArray;
