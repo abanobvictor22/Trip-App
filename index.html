@@ -662,6 +662,7 @@
         window.formatToDateTimeLocalString = function (val) {
             if (!val) return getLocalIsoString();
             try {
+                // 1. في حالة كان التنسيق نصي ومضبوط مسبقاً بالشكل المطلوب YYYY-MM-DDTHH:mm
                 if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(val)) {
                     return val.slice(0, 16);
                 }
@@ -677,17 +678,41 @@
                     dt = new Date(val);
                 }
 
+                // 2. معالجة ذكية في حال فشل المتصفح في قراءة التاريخ (مثل حالة: '٣ يوليو، ١٢:٠٢ ص')
                 if (!dt || isNaN(dt.getTime())) {
                     if (typeof val === 'string') {
+                        // أ- تحويل الأرقام العربية والفارسية إلى إنجليزية وإزالة علامات التنسيق المخفية (RTL marks)
                         let cleanStr = val.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
                             .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
                             .replace(/[\u200E\u200F\u061C\u200B-\u200D\uFEFF]/g, '')
                             .trim();
 
+                        // ب- تحديد هل الوقت صباحاً (AM) أم مساءً (PM)
                         let isPM = /م|مساء|pm/i.test(cleanStr);
                         let isAM = /ص|صباح|am/i.test(cleanStr);
                         cleanStr = cleanStr.replace(/[مص]|مساء|صباح|am|pm/gi, '').trim();
 
+                        // ج- تحويل أسماء الأشهر العربية والنصية إلى أرقام لتسهيل معالجتها
+                        const monthMap = {
+                            'كانون الثاني': 1, 'تشرين الثاني': 11, 'تشرين الأول': 10, 'كانون الأول': 12,
+                            'يناير': 1, 'جانفي': 1, 'فبراير': 2, 'فيفري': 2, 'شباط': 2, 'مارس': 3, 'آذار': 3,
+                            'أبريل': 4, 'أفريل': 4, 'نيسان': 4, 'مايو': 5, 'ماي': 5, 'أيار': 5, 'يونيو': 6,
+                            'جوان': 6, 'حزيران': 6, 'يوليو': 7, 'جويلية': 7, 'تموز': 7, 'أغسطس': 8, 'أوت': 8,
+                            'آب': 8, 'سبتمبر': 9, 'أيلول': 9, 'أكتوبر': 10, 'نوفمبر': 11, 'ديسمبر': 12
+                        };
+
+                        // ترتيب الأشهر حسب الطول التنازلي لتجنب تداخل الأسماء المركبة (مثل تشرين الأول وتشرين الثاني)
+                        const sortedMonths = Object.keys(monthMap).sort((a, b) => b.length - a.length);
+                        for (const mName of sortedMonths) {
+                            if (cleanStr.includes(mName)) {
+                                const mVal = monthMap[mName];
+                                // استبدال اسم الشهر برقم محاط بشرطات ليناسب الخطوة التالية (مثال: "3 يوليو" تصبح "3-7-")
+                                cleanStr = cleanStr.replace(new RegExp('\\s*' + mName + '\\s*'), '-' + mVal + '-');
+                                break;
+                            }
+                        }
+
+                        // د- استخراج اليوم، الشهر، (والسنة إن وجدت)، والساعات والدقائق
                         let dateParts = cleanStr.match(/(\d{1,4})[\/\-\.](\d{1,2})(?:[\/\-\.](\d{1,4}))?/);
                         let timeParts = cleanStr.match(/(\d{1,2}):(\d{2})/);
 
@@ -696,20 +721,21 @@
                             let p2 = parseInt(dateParts[2], 10);
                             let p3 = dateParts[3] ? parseInt(dateParts[3], 10) : null;
 
-                            let year = new Date().getFullYear();
+                            let year = new Date().getFullYear(); // السنة الافتراضية هي الحالية إذا لم تذكر
                             let month = 1;
                             let day = 1;
 
+                            // تحديد الترتيب (يوم/شهر أم شهر/يوم أم سنة/شهر/يوم)
                             if (p1 > 1000) { year = p1; month = p2; day = p3 || 1; }
                             else if (p3 && p3 > 1000) { day = p1; month = p2; year = p3; }
-                            else { day = p1; month = p2; }
+                            else { day = p1; month = p2; } // التنسيق الافتراضي في مصر والعرب (يوم/شهر)
 
                             let hours = 0;
                             let minutes = 0;
                             if (timeParts) {
                                 hours = parseInt(timeParts[1], 10);
                                 minutes = parseInt(timeParts[2], 10);
-                                if (isPM && hours < 12) hours += 12;
+                                if (isPM && hours < 12) hours += 12; // تحويل لنظام 24 ساعة
                                 if (isAM && hours === 12) hours = 0;
                             }
 
@@ -720,6 +746,7 @@
 
                 if (!dt || isNaN(dt.getTime())) return getLocalIsoString();
 
+                // إعادة بناء النص بإضافة الأصفار الناقصة (Leading Zeros) التي يطلبها المتصفح إجبارياً
                 const year = dt.getFullYear();
                 const month = String(dt.getMonth() + 1).padStart(2, '0');
                 const day = String(dt.getDate()).padStart(2, '0');
@@ -844,12 +871,16 @@
             if (unsubscribeActiveTrip) unsubscribeActiveTrip();
             if (!activeTripId) { refreshActiveTripUI(); return; }
 
+            // 1. علم (Flag) لمعرفة إن دي أول مرة يتم تحميل البيانات عند فتح الصفحة أو عمل Refresh
+            let isFirstSnapshot = true;
+
             unsubscribeActiveTrip = onSnapshot(doc(db, "trips", activeTripId), (docSnap) => {
                 if (docSnap.exists()) {
                     const cloudData = docSnap.data();
                     let idx = trips.findIndex(t => t.id === activeTripId);
 
-                    if (!window.isSavingLocally && trips[idx]) {
+                    // 2. لا تظهر أي إشعارات توست لو كانت دي المرة الأولى أو لو كان المستخدم هو اللي بيحفظ بنفسه
+                    if (!isFirstSnapshot && !window.isSavingLocally && trips[idx]) {
                         const oldExp = trips[idx].expenses || [];
                         const newExp = cloudData.expenses || [];
 
@@ -869,9 +900,15 @@
                                 msgEn = `🗑️ Deleted expense: [${removed.description}] (${removed.amount.toFixed(0)})`;
                             }
                         } else {
+                            // 3. مقارنة دقيقة للخصائص الأساسية للمصروف لتجنب تداخل تعديل التصنيفات
                             const modified = newExp.find(ne => {
                                 const oe = oldExp.find(o => o.id === ne.id);
-                                return oe && JSON.stringify(oe) !== JSON.stringify(ne);
+                                return oe && (
+                                    oe.description !== ne.description ||
+                                    oe.amount !== ne.amount ||
+                                    oe.paidBy !== ne.paidBy ||
+                                    oe.category !== ne.category
+                                );
                             });
                             if (modified) {
                                 msgAr = `✏️ تم تعديل بيانات مصروف: [${modified.description}] (${modified.amount.toFixed(0)})`;
@@ -907,6 +944,8 @@
                     refreshActiveTripUI();
                 }
                 window.isSavingLocally = false;
+                // 4. بعد انتهاء أول لقطة بنجاح، بنحول العلم لـ false عشان التحديثات القادمة تظهر كإشعارات عادي
+                isFirstSnapshot = false;
             }, (error) => console.error("Sync Error:", error));
         }
 
@@ -1353,7 +1392,7 @@
                 tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-gray-400 italic">${t('لا يوجد', 'Empty')}</td></tr>`; return;
             }
 
-            const sorted = [...trip.expenses].sort((a, b) => new Date(formatToDateTimeLocalString(b.dateTime) || 0) - new Date(formatToDateTimeLocalString(a.dateTime) || 0));
+            const sorted = [...trip.expenses].sort((a, b) => new Date(formatToDateTimeLocalString(b.rawDate || b.dateTime) || 0) - new Date(formatToDateTimeLocalString(a.rawDate || a.dateTime) || 0));
 
             sorted.forEach(e => {
                 let sDet = Object.keys(e.shares).filter(n => e.shares[n] > 0).map(n => `${n}(${e.shares[n].toFixed(0)})`).join('، ');
