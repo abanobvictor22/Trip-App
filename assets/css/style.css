@@ -1,0 +1,346 @@
+:lang(en) .ar-text {
+    display: none !important;
+}
+
+:lang(ar) .en-text {
+    display: none !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #475569;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+:lang(en) @keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-enter {
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   نظام القائمة المرنة المتجاوبة (Responsive Flex-Wrap List Grid)
+   ========================================================================== */
+
+/* 1. منع إخفاء النصوص أو قصها نهائياً عن جميع الخلايا */
+#expensesTableBody>*>td,
+#expensesTableBody>*>div,
+#expensesTableBody>*>span {
+    overflow: visible !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+/* 2. الإعدادات الأساسية لحاوية المصروف الواحد */
+#expensesTableBody>* {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background-color: transparent;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.15s ease-in-out;
+    cursor: pointer;
+    width: 100%;
+    position: relative;
+    padding-inline-start: 1.25rem !important;
+}
+
+#expensesTableBody>*:last-child {
+    border-bottom: none !important;
+}
+
+.dark #expensesTableBody>* {
+    border-color: rgba(51, 65, 85, 0.5);
+}
+
+#expensesTableBody>*:hover {
+    background-color: #f8fafc;
+}
+
+.dark #expensesTableBody>*:hover {
+    background-color: rgba(30, 41, 59, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   تصميم شريط كبسولة اللون الدائرية (Pill Indicator)
+   -------------------------------------------------------------------------- */
+#expensesTableBody>*::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0.35rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 28px;
+    border-radius: 9999px;
+    background-color: #3b82f6;
+    transition: height 0.2s ease;
+}
+
+#expensesTableBody>*:hover::before {
+    height: 36px;
+}
+
+/* ==========================================================================
+   أولاً: تخطيط شاشات الموبايل (التفاف ذكي Wrap مدمج بدون أي تداخل في الكلام)
+   ========================================================================== */
+@media (max-width: 767px) {
+    #expensesTableBody>* {
+        flex-wrap: wrap !important;
+        padding: 0.65rem 0.85rem !important;
+        padding-inline-start: 1.25rem !important;
+        gap: 0.15rem 0 !important;
+    }
+
+    /* السطر الأول - يمين: البيان/الوصف (يأخذ العرض المتاح ناقص مساحة المبلغ) */
+    #expensesTableBody>*>*:nth-child(3) {
+        order: 1 !important;
+        flex: 1 1 calc(100% - 110px) !important;
+        max-width: calc(100% - 110px) !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        line-height: 1.4 !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(3) {
+        color: #f8fafc !important;
+    }
+
+    /* السطر الأول - يسار: المبلغ (يجلس بأمان بجانب الوصف بدون تموضع مطلق) */
+    #expensesTableBody>*>*:nth-child(4) {
+        order: 2 !important;
+        flex: 0 0 auto !important;
+        min-width: 90px !important;
+        text-align: end !important;
+        font-size: 1.05rem !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+        margin-inline-start: auto !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(4) {
+        color: #ffffff !important;
+    }
+
+    /* السطر الثاني: الدافع (ينزل لسطر جديد تلقائياً لأن السطر الأول امتلأ) */
+    #expensesTableBody>*>*:nth-child(2) {
+        order: 3 !important;
+        flex: 0 1 auto !important;
+        font-size: 0.78rem !important;
+        color: #64748b !important;
+        margin-top: 0.25rem !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(2) {
+        color: #94a3b8 !important;
+    }
+
+    /* السطر الثاني: التاريخ (يجلس بجانب الدافع مباشرة مع ترك مسافة آمنة) */
+    #expensesTableBody>*>*:nth-child(1) {
+        order: 4 !important;
+        flex: 0 1 auto !important;
+        font-size: 0.78rem !important;
+        color: #94a3b8 !important;
+        margin-top: 0.25rem !important;
+        margin-inline-start: 0.75rem !important;
+    }
+
+    /* إضافة نقطة فاصلة أنيقة بين الدافع والتاريخ في الموبايل فقط */
+    #expensesTableBody>*>*:nth-child(1)::before {
+        content: "•" !important;
+        margin-inline-end: 0.4rem !important;
+        opacity: 0.5 !important;
+    }
+}
+
+/* ==========================================================================
+   ثانياً: تخطيط الشاشات الكبيرة الكمبيوتر والتابلت (جنب بعض في سطر واحد أفقي)
+   ========================================================================== */
+@media (min-width: 768px) {
+    #expensesTableBody>* {
+        flex-wrap: nowrap !important;
+        gap: 1.5rem !important;
+        padding: 0.85rem 1.5rem !important;
+        padding-inline-start: 1.5rem !important;
+    }
+
+    /* العمود 1: البيان / الوصف */
+    #expensesTableBody>*>*:nth-child(3) {
+        order: 1 !important;
+        flex: 2 1 35% !important;
+        max-width: none !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(3) {
+        color: #f8fafc !important;
+    }
+
+    /* العمود 2: الدافع */
+    #expensesTableBody>*>*:nth-child(2) {
+        order: 2 !important;
+        flex: 1 1 20% !important;
+        font-size: 0.88rem !important;
+        color: #64748b !important;
+        margin-top: 0 !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(2) {
+        color: #94a3b8 !important;
+    }
+
+    /* العمود 3: التاريخ */
+    #expensesTableBody>*>*:nth-child(1) {
+        order: 3 !important;
+        flex: 1 1 20% !important;
+        font-size: 0.88rem !important;
+        color: #64748b !important;
+        margin-top: 0 !important;
+        margin-inline-start: 0 !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(1) {
+        color: #94a3b8 !important;
+    }
+
+    /* إخفاء النقطة الفاصلة في الشاشات الكبيرة لأن كل معلومة في عمود مستقل */
+    #expensesTableBody>*>*:nth-child(1)::before {
+        display: none !important;
+    }
+
+    /* العمود 4: المبلغ (في أقصى اليسار) */
+    #expensesTableBody>*>*:nth-child(4) {
+        order: 4 !important;
+        flex: 0 0 auto !important;
+        min-width: 110px !important;
+        text-align: end !important;
+        font-size: 1.15rem !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+        margin-inline-start: 0 !important;
+    }
+
+    .dark #expensesTableBody>*>*:nth-child(4) {
+        color: #ffffff !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   ربط ألوان كبسولة البنود (Categories Pill Colors) بالشريط الجانبي
+   -------------------------------------------------------------------------- */
+
+/* الطعام والمطاعم */
+#expensesTableBody>*[data-category*="طعام"]::before,
+#expensesTableBody>*[data-category*="مطعم"]::before,
+#expensesTableBody>*[data-category*="أكل"]::before,
+#expensesTableBody>*[data-category*="كافيه"]::before,
+#expensesTableBody>*[data-category*="Food"]::before,
+#expensesTableBody>*[data-category*="Restaurant"]::before,
+.cat-food::before {
+    background-color: #f59e0b !important;
+}
+
+/* المواصلات والبنزين */
+#expensesTableBody>*[data-category*="مواصلات"]::before,
+#expensesTableBody>*[data-category*="بنزين"]::before,
+#expensesTableBody>*[data-category*="طيران"]::before,
+#expensesTableBody>*[data-category*="تاكسي"]::before,
+#expensesTableBody>*[data-category*="أوبر"]::before,
+#expensesTableBody>*[data-category*="Transport"]::before,
+.cat-transport::before {
+    background-color: #3b82f6 !important;
+}
+
+/* السكن والإيجارات والفنادق */
+#expensesTableBody>*[data-category*="سكن"]::before,
+#expensesTableBody>*[data-category*="فندق"]::before,
+#expensesTableBody>*[data-category*="شاليه"]::before,
+#expensesTableBody>*[data-category*="إيجار"]::before,
+#expensesTableBody>*[data-category*="Hotel"]::before,
+.cat-hotel::before {
+    background-color: #8b5cf6 !important;
+}
+
+/* الترفيه والأنشطة */
+#expensesTableBody>*[data-category*="ترفيه"]::before,
+#expensesTableBody>*[data-category*="تذاكر"]::before,
+#expensesTableBody>*[data-category*="رحلة"]::before,
+#expensesTableBody>*[data-category*="أنشطة"]::before,
+.cat-entertainment::before {
+    background-color: #10b981 !important;
+}
+
+/* التسوق ومشتريات السوبرماركت */
+#expensesTableBody>*[data-category*="تسوق"]::before,
+#expensesTableBody>*[data-category*="سوبرماركت"]::before,
+#expensesTableBody>*[data-category*="هدايا"]::before,
+#expensesTableBody>*[data-category*="مشتريات"]::before,
+.cat-shopping::before {
+    background-color: #f43f5e !important;
+}
+
+/* بنود عامة وأخرى */
+#expensesTableBody>*[data-category*="عام"]::before,
+#expensesTableBody>*[data-category*="أخرى"]::before,
+#expensesTableBody>*[data-category*="طوارئ"]::before,
+.cat-general::before {
+    background-color: #06b6d4 !important;
+}
+
+/* ألوان احتياطية دورية (Fallback Colors) */
+#expensesTableBody>*:nth-child(5n+1):not([class*="cat-"]):not([data-category])::before {
+    background-color: #3b82f6 !important;
+}
+
+#expensesTableBody>*:nth-child(5n+2):not([class*="cat-"]):not([data-category])::before {
+    background-color: #f43f5e !important;
+}
+
+#expensesTableBody>*:nth-child(5n+3):not([class*="cat-"]):not([data-category])::before {
+    background-color: #10b981 !important;
+}
+
+#expensesTableBody>*:nth-child(5n+4):not([class*="cat-"]):not([data-category])::before {
+    background-color: #8b5cf6 !important;
+}
+
+#expensesTableBody>*:nth-child(5n+5):not([class*="cat-"]):not([data-category])::before {
+    background-color: #f59e0b !important;
+}

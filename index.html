@@ -8,201 +8,165 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
-    <style>
-        :lang(en) .ar-text {
-            display: none !important;
-        }
-
-        :lang(ar) .en-text {
-            display: none !important;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #475569;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        :lang(en) @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .toast-enter {
-            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-    </style>
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body
-    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans min-h-screen p-3 md:p-8 overflow-x-hidden transition-colors duration-300 pb-20">
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans min-h-screen overflow-x-hidden transition-colors duration-300 pb-20">
 
-    <div class="max-w-7xl mx-auto w-full relative">
+    <nav
+        class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors border-b border-gray-100 dark:border-gray-700 mb-6">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between py-3 md:py-0 md:h-16 gap-3">
 
-        <header
-            class="relative bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 text-white p-6 md:p-8 rounded-2xl shadow-xl mb-8 flex flex-col lg:flex-row justify-between items-center gap-6 overflow-hidden">
-            <div
-                class="absolute -top-24 -right-24 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl pointer-events-none">
-            </div>
-            <div
-                class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-400 opacity-20 rounded-full blur-3xl pointer-events-none">
-            </div>
+                <div class="flex items-center justify-between w-full md:w-auto">
+                    <div
+                        class="flex items-center gap-2 font-black text-lg md:text-xl text-indigo-600 dark:text-indigo-400 shrink-0">
+                        <span>✈️</span>
+                        <span class="ar-text">إدارة المصروفات</span>
+                        <span class="en-text">Trip Expenses</span>
+                    </div>
 
-            <div class="relative z-10 text-center lg:text-start flex-1">
-                <h1 class="text-3xl md:text-4xl font-extrabold mb-3 drop-shadow-md">
-                    <span class="ar-text">✈️ إدارة مصروفات الرحلات المشتركة</span>
-                    <span class="en-text">✈️ Shared Trip Expenses System</span>
-                </h1>
-                <p class="text-blue-100 dark:text-gray-400 text-sm md:text-base font-medium opacity-90 max-w-xl">
-                    <span class="ar-text">أنشئ رحلاتك، ادعُ أصدقاءك للمزامنة الفورية، وسجل فواتيرك بدقة واحترافية ليتم
-                        تسويتها تلقائياً.</span>
-                    <span class="en-text">Create trips, invite friends for instant sync, and accurately log your bills
-                        for automatic settlement.</span>
-                </p>
-            </div>
-
-            <div class="relative z-10 flex flex-wrap justify-center gap-3">
-                <button onclick="toggleLang()"
-                    class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm flex items-center gap-2">
-                    <span class="ar-text">🌐 English</span>
-                    <span class="en-text">🌐 عربي</span>
-                </button>
-                <button onclick="toggleTheme()"
-                    class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm flex items-center gap-2">
-                    <span class="ar-text" id="themeIconAr">🌙 ليلي</span>
-                    <span class="en-text" id="themeIconEn">🌙 Dark</span>
-                </button>
-                <button onclick="clearLocalTracking()"
-                    class="bg-rose-500/80 hover:bg-rose-600 text-white border border-rose-400/50 px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-2">
-                    <span class="ar-text">🗑️ مسح من الجهاز</span>
-                    <span class="en-text">🗑️ Clear Device</span>
-                </button>
-            </div>
-        </header>
-
-        <div
-            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 mb-8 transition-colors">
-            <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2 mb-6">
-                <span class="ar-text">🧳 إدارة وتزامن الرحلات</span>
-                <span class="en-text">🧳 Trip Management & Sync</span>
-            </h2>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-gray-100 dark:border-gray-700 pb-6">
-                <div class="space-y-3 lg:border-e border-gray-100 dark:border-gray-700 lg:pe-6">
-                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                        <span class="ar-text">➕ إنشاء رحلة سحابية جديدة</span>
-                        <span class="en-text">➕ Create a New Trip</span>
-                    </label>
-                    <div class="flex flex-col gap-3">
-                        <input id="tripNameInput" type="text"
-                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition">
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input id="tripDescInput" type="text"
-                                class="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition">
-                            <button onclick="createNewTrip()"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer whitespace-nowrap shadow-md hover:shadow-lg">
-                                <span class="ar-text">إنشاء الرحلة 🚀</span>
-                                <span class="en-text">Create 🚀</span>
-                            </button>
-                        </div>
+                    <div class="flex items-center gap-1 md:hidden shrink-0">
+                        <button onclick="toggleTheme()"
+                            class="p-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-xs font-bold border border-gray-200 dark:border-gray-600">
+                            <span id="themeIconArMobile">🌙</span>
+                        </button>
+                        <button onclick="toggleLang()"
+                            class="p-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-xs font-bold border border-gray-200 dark:border-gray-600">
+                            <span class="ar-text">EN</span><span class="en-text">AR</span>
+                        </button>
                     </div>
                 </div>
-
-                <div class="space-y-3 lg:ps-2">
-                    <label
-                        class="block text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
-                        <span class="ar-text">🔗 الانضمام لرحلة بواسطة الكود</span>
-                        <span class="en-text">🔗 Join via Code</span>
-                    </label>
-                    <div class="flex flex-col gap-3">
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                            <span class="ar-text">اطلب الكود من منشئ الرحلة وأدخلله هنا للربط:</span>
-                            <span class="en-text">Ask for the trip code and paste it here:</span>
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input id="joinTripCodeInput" type="text"
-                                class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-gray-700/50 border border-emerald-200 dark:border-emerald-600/50 rounded-xl text-sm text-emerald-900 dark:text-emerald-100 font-mono text-center focus:ring-2 focus:ring-emerald-500 outline-none uppercase font-bold transition">
-                            <button onclick="joinTripById()"
-                                class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer whitespace-nowrap shadow-md hover:shadow-lg">
-                                <span class="ar-text">انضمام 🔐</span>
-                                <span class="en-text">Join 🔐</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center pt-6">
-                <div class="space-y-2 md:col-span-1">
-                    <label class="block text-xs font-bold text-blue-700 dark:text-blue-400">
-                        <span class="ar-text">الرحلات المسجلة على جهازك:</span>
-                        <span class="en-text">Saved Trips:</span>
-                    </label>
-                    <select id="activeTripSelect" onchange="switchTrip()"
-                        class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-bold text-blue-900 dark:text-blue-100 outline-none focus:ring-2 focus:ring-blue-500 transition"></select>
-                </div>
-                <div id="currentTripInfoBox"
-                    class="md:col-span-2 p-3.5 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/30 text-xs text-blue-900 dark:text-blue-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 hidden">
-                </div>
-            </div>
-        </div>
-
-        <div id="mainAppContent" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden">
-
-            <div class="space-y-6 lg:col-span-4">
 
                 <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
+                    class="grid grid-cols-3 md:flex items-center bg-gray-100 dark:bg-gray-700 p-1 rounded-xl w-full md:w-auto gap-1">
+                    <button onclick="switchTab('tab-management')" id="btn-tab-management"
+                        class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all duration-200 bg-blue-600 text-white shadow-sm text-center">
+                        <span class="ar-text">🧳 الرحلات والأعضاء</span>
+                        <span class="en-text">🧳 Trips & Members</span>
+                    </button>
+                    <button onclick="switchTab('tab-expenses')" id="btn-tab-expenses"
+                        class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">
+                        <span class="ar-text">💸 المصروفات</span>
+                        <span class="en-text">💸 Expenses</span>
+                    </button>
+                    <button onclick="switchTab('tab-reports')" id="btn-tab-reports"
+                        class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-center">
+                        <span class="ar-text">📊 التقارير والتسوية</span>
+                        <span class="en-text">📊 Reports</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 sm:flex items-center gap-1.5 w-full md:w-auto">
+                    <button onclick="requestNotificationPermissionUI()" id="notifBtn"
+                        class="hidden sm:flex p-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-xs font-bold hover:bg-gray-100 border border-gray-200 dark:border-gray-600 items-center gap-1">
+                        <span class="ar-text" id="notifTextAr">🔔</span><span class="en-text" id="notifTextEn">🔔</span>
+                    </button>
+                    <button onclick="toggleLang()"
+                        class="hidden md:flex p-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-xs font-bold hover:bg-gray-100 border border-gray-200 dark:border-gray-600">
+                        <span class="ar-text">EN</span><span class="en-text">AR</span>
+                    </button>
+                    <button onclick="toggleTheme()"
+                        class="hidden md:flex p-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-xs font-bold hover:bg-gray-100 border border-gray-200 dark:border-gray-600">
+                        <span id="themeIconAr">🌙</span><span id="themeIconEn">🌙</span>
+                    </button>
+                    <button onclick="deleteCurrentTrip()" id="deleteTripBtn"
+                        class="hidden p-2 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 text-xs font-bold hover:bg-rose-200 border border-rose-300 dark:border-rose-800"
+                        title="مسح هذه الرحلة فقط">
+                        <span class="ar-text">🗑️ مسح هذه الرحلة</span><span class="en-text">🗑️ Delete Trip</span>
+                    </button>
+                    <button onclick="clearLocalTracking()"
+                        class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-bold hover:bg-gray-200 border border-gray-300 dark:border-gray-700"
+                        title="مسح من الجهاز">
+                        <span class="ar-text">❌ مسح الجهاز</span><span class="en-text">❌ Clear Device</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto w-full px-3 md:px-8 relative">
+
+        <div id="tab-management" class="tab-pane block space-y-6">
+            <div
+                class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2 mb-6">
+                    <span class="ar-text">🧳 إدارة وتزامن الرحلات</span><span class="en-text">🧳 Trip Management &
+                        Sync</span>
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-gray-100 dark:border-gray-700 pb-6">
+                    <div class="space-y-3 lg:border-e border-gray-100 dark:border-gray-700 lg:pe-6">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                            <span class="ar-text">➕ إنشاء رحلة سحابية جديدة</span><span class="en-text">➕ Create a New
+                                Trip</span>
+                        </label>
+                        <div class="flex flex-col gap-3">
+                            <input id="tripNameInput" type="text" placeholder="اسم الرحلة (مثال: رحلة دهب 2026)"
+                                class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <input id="tripDescInput" type="text" placeholder="وصف قصير للرحلة..."
+                                    class="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                <button onclick="createNewTrip()"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md whitespace-nowrap">
+                                    <span class="ar-text">إنشاء الرحلة 🚀</span><span class="en-text">Create 🚀</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 lg:ps-2">
+                        <label
+                            class="block text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
+                            <span class="ar-text">🔗 الانضمام لرحلة بواسطة الكود</span><span class="en-text">🔗 Join via
+                                Code</span>
+                        </label>
+                        <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                            <input id="joinTripCodeInput" type="text" placeholder="CODE-XXXX"
+                                class="flex-1 px-4 py-2.5 bg-emerald-50 dark:bg-gray-700/50 border border-emerald-200 dark:border-emerald-600/50 rounded-xl text-sm text-emerald-900 dark:text-emerald-100 font-mono text-center uppercase font-bold outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button onclick="joinTripById()"
+                                class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md whitespace-nowrap">
+                                <span class="ar-text">انضمام 🔐</span><span class="en-text">Join 🔐</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center pt-6">
+                    <div class="space-y-2 md:col-span-1">
+                        <label class="block text-xs font-bold text-blue-700 dark:text-blue-400">
+                            <span class="ar-text">الرحلات المسجلة على جهازك:</span><span class="en-text">Saved
+                                Trips:</span>
+                        </label>
+                        <select id="activeTripSelect" onchange="switchTrip()"
+                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-bold text-blue-900 dark:text-blue-100 outline-none"></select>
+                    </div>
+                    <div id="currentTripInfoBox"
+                        class="md:col-span-2 p-3.5 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/30 text-xs text-blue-900 dark:text-blue-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 hidden">
+                    </div>
+                </div>
+            </div>
+
+            <div id="managementSubContent" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
-                        <span class="ar-text">👥 أفراد الرحلة</span>
-                        <span class="en-text">👥 Trip Members</span>
+                        <span class="ar-text">👥 أفراد الرحلة</span><span class="en-text">👥 Trip Members</span>
                     </h2>
                     <div class="space-y-3">
                         <div class="flex flex-col gap-2">
-                            <input id="memberNameInput" type="text"
-                                class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500">
-                            <input id="memberPhoneInput" type="tel"
-                                class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="memberNameInput" type="text" placeholder="اسم الشخص..."
+                                class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="memberPhoneInput" type="tel" placeholder="رقم الموبايل (اختياري)..."
+                                class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <button onclick="addMember()"
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer shadow-sm">
-                            <span class="ar-text">إضافة العضو</span>
-                            <span class="en-text">Add Member</span>
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">
+                            <span class="ar-text">إضافة العضو</span><span class="en-text">Add Member</span>
                         </button>
                     </div>
                     <div id="membersList"
@@ -210,154 +174,138 @@
                 </div>
 
                 <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
+                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
-                        <span class="ar-text">🏷️ إدارة بنود المصروفات</span>
-                        <span class="en-text">🏷️ Manage Categories</span>
+                        <span class="ar-text">🏷️ إدارة بنود المصروفات</span><span class="en-text">🏷️ Manage
+                            Categories</span>
                     </h2>
                     <div class="flex gap-2 mb-4">
                         <input id="newCategoryInput" type="text" placeholder="اسم بند جديد..."
-                            class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 font-semibold">
+                            class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500">
                         <button onclick="addCategoryFromUI()"
-                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer shadow-sm">
-                            <span class="ar-text">إضافة ➕</span>
-                            <span class="en-text">Add ➕</span>
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">
+                            <span class="ar-text">إضافة ➕</span><span class="en-text">Add ➕</span>
                         </button>
                     </div>
                     <div id="categoriesList"
                         class="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-1 custom-scrollbar"></div>
                 </div>
-
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
-                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
-                        <span class="ar-text">⚖️ محفظة الأفراد (الصافي)</span>
-                        <span class="en-text">⚖️ Net Balances</span>
-                    </h2>
-                    <div id="settlementList" class="space-y-2.5"></div>
-                </div>
-
-                <div
-                    class="bg-indigo-50/50 dark:bg-indigo-900/10 p-6 rounded-2xl shadow-sm border border-indigo-100 dark:border-indigo-800/30 transition-colors">
-                    <h2 class="text-lg font-bold text-indigo-900 dark:text-indigo-300 mb-4 flex items-center gap-2">
-                        <span class="ar-text">💸 خطة السداد والتسوية</span>
-                        <span class="en-text">💸 Settlement Plan</span>
-                    </h2>
-                    <div id="paymentPlanList" class="space-y-2.5"></div>
-                </div>
-
             </div>
+        </div>
 
-            <div class="space-y-6 lg:col-span-8">
-
-                <button onclick="openExpenseModal()"
-                    class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white p-4 rounded-2xl text-lg font-bold transition cursor-pointer shadow-lg hover:shadow-xl flex justify-center items-center gap-2 border border-emerald-400/30">
-                    <span class="ar-text">➕ إضافة مصروف أو فاتورة جديدة</span>
-                    <span class="en-text">➕ Add New Expense / Bill</span>
+        <div id="tab-expenses" class="tab-pane hidden space-y-6">
+            <div id="expensesSubContent" class="space-y-6 hidden">
+                <button onclick="openExpenseModal(null)"
+                    class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white p-4 rounded-2xl text-lg font-bold shadow-lg flex justify-center items-center gap-2 border border-emerald-400/30 transition-transform active:scale-[0.99]">
+                    <span class="ar-text">➕ إضافة مصروف أو فاتورة جديدة</span><span class="en-text">➕ Add New Expense /
+                        Bill</span>
                 </button>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div
-                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center transition-colors">
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center">
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold mb-1 uppercase tracking-wider">
-                            <span class="ar-text">إجمالي المصاريف</span>
-                            <span class="en-text">Total Expenses</span>
+                            <span class="ar-text">إجمالي المصاريف</span><span class="en-text">Total Expenses</span>
                         </p>
                         <p id="totalTripExpenses" class="text-3xl font-black text-blue-600 dark:text-blue-400">0</p>
                     </div>
                     <div
-                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center transition-colors">
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center">
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold mb-1 uppercase tracking-wider">
-                            <span class="ar-text">عدد العمليات</span>
-                            <span class="en-text">Transactions</span>
+                            <span class="ar-text">عدد العمليات</span><span class="en-text">Transactions</span>
                         </p>
                         <p id="totalInvoices" class="text-3xl font-black text-purple-600 dark:text-purple-400">0</p>
                     </div>
                 </div>
 
-                <div
-                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors overflow-hidden">
+                <div id="expensesLogSection"
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <div
-                        class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
-                        <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                            <span class="ar-text">📋 دفتر المشتريات (الأحدث أولاً)</span>
-                            <span class="en-text">📋 Expense Log (Newest First)</span>
+                        class="p-4 sm:p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+                        <h2
+                            class="text-base sm:text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                            <span class="ar-text">📋 دفتر المشتريات (اضغط للتعديل)</span>
+                            <span class="en-text">📋 Expense Log (Click to Edit)</span>
                         </h2>
-                        <span class="text-xs text-gray-400 dark:text-gray-500">
-                            <span class="ar-text">اضغط على الصف للتفاصيل</span>
-                            <span class="en-text">Click row for details</span>
-                        </span>
                     </div>
 
-                    <div class="max-h-[450px] overflow-y-auto custom-scrollbar relative">
-                        <table class="w-full text-start text-sm">
-                            <thead
-                                class="bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 uppercase text-[10px] font-bold sticky top-0 z-10 shadow-sm">
-                                <tr>
-                                    <th class="px-4 py-3 text-start w-1/4"><span class="ar-text">التاريخ</span><span
-                                            class="en-text">Date</span></th>
-                                    <th class="px-4 py-3 text-start w-1/4"><span class="ar-text">الدافع</span><span
-                                            class="en-text">Payer</span></th>
-                                    <th class="px-4 py-3 text-start w-1/4"><span class="ar-text">البيان
-                                            (الوصف)</span><span class="en-text">Description</span></th>
-                                    <th class="px-4 py-3 text-end w-1/4"><span class="ar-text">المبلغ</span><span
-                                            class="en-text">Amount</span></th>
-                                </tr>
-                            </thead>
-                            <tbody id="expensesTableBody"
-                                class="divide-y divide-gray-100 dark:divide-gray-700/50 text-gray-700 dark:text-gray-300">
-                            </tbody>
-                        </table>
+                    <div class="p-3 sm:p-4 bg-gray-50/40 dark:bg-gray-900/10">
+                        <div id="expensesTableBody"
+                            class="flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm max-h-[550px] overflow-y-auto custom-scrollbar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="no-trip-fallback bg-white dark:bg-gray-800 p-16 text-center rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="text-6xl mb-4 opacity-50">☁️</div>
+                <p class="text-gray-400 text-xl font-bold mb-2"><span class="ar-text">لم يتم تحديد أي رحلة</span><span
+                        class="en-text">No Trip Selected</span></p>
+                <p class="text-blue-600 dark:text-blue-400 font-medium text-sm"><span class="ar-text">اختر رحلة من التاب
+                        الأول لعرض المصروفات.</span><span class="en-text">Select a trip from the first tab.</span></p>
+            </div>
+        </div>
+
+        <div id="tab-reports" class="tab-pane hidden space-y-6">
+            <div id="reportsSubContent" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden">
+                <div class="space-y-6 lg:col-span-5">
+                    <div
+                        class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                            <span class="ar-text">⚖️ محفظة الأفراد (الصافي)</span><span class="en-text">⚖️ Net
+                                Balances</span>
+                        </h2>
+                        <div id="settlementList" class="space-y-2.5"></div>
+                    </div>
+
+                    <div
+                        class="bg-indigo-50/50 dark:bg-indigo-900/10 p-6 rounded-2xl shadow-sm border border-indigo-100 dark:border-indigo-800/30">
+                        <h2 class="text-lg font-bold text-indigo-900 dark:text-indigo-300 mb-4 flex items-center gap-2">
+                            <span class="ar-text">💸 خطة السداد والتسوية</span><span class="en-text">💸 Settlement
+                                Plan</span>
+                        </h2>
+                        <div id="paymentPlanList" class="space-y-2.5"></div>
                     </div>
                 </div>
 
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-800/50 transition-colors">
+                <div class="space-y-6 lg:col-span-7">
                     <div
-                        class="flex justify-between items-center mb-6 flex-wrap gap-4 border-b border-gray-100 dark:border-gray-700 pb-4">
-                        <h2 class="text-lg font-bold text-amber-900 dark:text-amber-500 flex items-center gap-2">
-                            <span class="ar-text">📊 التقرير المالي الشامل</span>
-                            <span class="en-text">📊 Comprehensive Financial Report</span>
-                        </h2>
-                        <button onclick="copyReportToClipboard()"
-                            class="bg-gray-900 hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition cursor-pointer shadow-sm flex items-center gap-2">
-                            <span class="ar-text">📋 نسخ لـ واتساب</span>
-                            <span class="en-text">📋 Copy for WhatsApp</span>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                        <div id="tripReportContentBox" class="space-y-4"></div>
-
+                        class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-800/50">
                         <div
-                            class="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center">
-                            <h3
-                                class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">
-                                <span class="ar-text">توزيع المصروفات حسب البند</span>
-                                <span class="en-text">Expenses by Category</span>
-                            </h3>
-                            <div class="w-full max-w-[250px] aspect-square">
-                                <canvas id="categoryChart"></canvas>
+                            class="flex justify-between items-center mb-6 flex-wrap gap-4 border-b border-gray-100 dark:border-gray-700 pb-4">
+                            <h2 class="text-lg font-bold text-amber-900 dark:text-amber-500 flex items-center gap-2">
+                                <span class="ar-text">📊 التقرير المالي الشامل</span><span class="en-text">📊
+                                    Comprehensive Report</span>
+                            </h2>
+                            <button onclick="copyReportToClipboard()"
+                                class="bg-gray-900 hover:bg-black dark:bg-gray-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-sm">
+                                <span class="ar-text">📋 نسخ لـ واتساب</span><span class="en-text">📋 Copy for
+                                    WhatsApp</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                            <div id="tripReportContentBox" class="space-y-4"></div>
+                            <div
+                                class="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center">
+                                <h3
+                                    class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">
+                                    <span class="ar-text">توزيع المصروفات حسب البند</span><span class="en-text">Expenses
+                                        by Category</span></h3>
+                                <div class="w-full max-w-[250px] aspect-square"><canvas id="categoryChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-        </div>
-
-        <div id="noTripsWarning"
-            class="bg-white dark:bg-gray-800 p-16 text-center rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 mt-4 transition-colors">
-            <div class="text-6xl mb-4 opacity-50">☁️</div>
-            <p class="text-gray-400 text-xl font-bold mb-2">
-                <span class="ar-text">لم يتم تحديد أي رحلة</span>
-                <span class="en-text">No Trip Selected</span>
-            </p>
-            <p class="text-blue-600 dark:text-blue-400 font-medium text-sm">
-                <span class="ar-text">أنشئ رحلة جديدة أو انضم لرحلة أصدقائك للبدء.</span>
-                <span class="en-text">Create a new trip or join your friends to start.</span>
-            </p>
+            <div
+                class="no-trip-fallback bg-white dark:bg-gray-800 p-16 text-center rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="text-6xl mb-4 opacity-50">☁️</div>
+                <p class="text-gray-400 text-xl font-bold mb-2"><span class="ar-text">لم يتم تحديد أي رحلة</span><span
+                        class="en-text">No Trip Selected</span></p>
+            </div>
         </div>
 
     </div>
@@ -365,81 +313,74 @@
     <div id="expenseModal"
         class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
         <div
-            class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-2xl w-full p-6 relative max-h-[95vh] overflow-hidden flex flex-col transition-colors border border-gray-200 dark:border-gray-700">
+            class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-2xl w-full p-6 relative max-h-[95vh] overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700">
             <button onclick="closeExpenseModal()"
-                class="absolute top-5 left-5 rtl:right-5 rtl:left-auto bg-gray-100 dark:bg-gray-700 hover:bg-rose-100 hover:text-rose-600 dark:hover:bg-rose-900 dark:hover:text-rose-400 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center transition font-bold z-10">✕</button>
+                class="absolute top-5 left-5 rtl:right-5 rtl:left-auto bg-gray-100 dark:bg-gray-700 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center font-bold z-10">✕</button>
 
             <h2 id="expenseCardTitle"
                 class="text-xl font-black text-gray-800 dark:text-gray-100 mb-5 border-b border-gray-100 dark:border-gray-700 pb-4 pe-10">
-                <span class="ar-text">💰 تسجيل مصروفات</span>
-                <span class="en-text">💰 Log Expense</span>
+                <span class="ar-text">💰 تسجيل مصروفات</span><span class="en-text">💰 Log Expense</span>
             </h2>
 
             <div class="overflow-y-auto custom-scrollbar pe-2 flex-1 pb-4 space-y-5">
                 <div class="flex bg-gray-100 dark:bg-gray-700/50 p-1.5 rounded-xl">
                     <button type="button" id="tabSimple" onclick="switchExpenseMode('simple')"
-                        class="flex-1 text-center py-2 text-sm font-bold rounded-lg bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm cursor-pointer transition">
+                        class="flex-1 text-center py-2 text-sm font-bold rounded-lg bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm">
                         <span class="ar-text">مبلغ مباشر</span><span class="en-text">Direct Amount</span>
                     </button>
                     <button type="button" id="tabInvoice" onclick="switchExpenseMode('invoice')"
-                        class="flex-1 text-center py-2 text-sm font-bold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer transition">
+                        class="flex-1 text-center py-2 text-sm font-bold rounded-lg text-gray-500 dark:text-gray-400">
                         <span class="ar-text">فاتورة تفصيلية 🧾</span><span class="en-text">Detailed Bill 🧾</span>
                     </button>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase">
-                            <span class="ar-text">الدافع</span><span class="en-text">Payer</span>
-                        </label>
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase"><span
+                                class="ar-text">الدافع</span><span class="en-text">Payer</span></label>
                         <select id="expensePayer"
-                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 font-bold transition"></select>
+                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-bold outline-none"></select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase">
-                            <span class="ar-text">الوقت والتاريخ</span><span class="en-text">Date & Time</span>
-                        </label>
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase"><span
+                                class="ar-text">الوقت والتاريخ</span><span class="en-text">Date & Time</span></label>
                         <input id="expenseDateTime" type="datetime-local"
-                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold transition">
+                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-mono font-bold outline-none">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase">
-                            <span class="ar-text">البند (التصنيف)</span><span class="en-text">Category</span>
-                        </label>
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase"><span
+                                class="ar-text">البند (التصنيف)</span><span class="en-text">Category</span></label>
                         <select id="expenseCategory"
-                            class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 font-bold transition"></select>
+                            class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-bold outline-none"></select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase">
-                            <span class="ar-text">البيان / الوصف</span><span class="en-text">Description</span>
-                        </label>
-                        <input id="expenseDesc" type="text"
-                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase"><span
+                                class="ar-text">البيان / الوصف</span><span class="en-text">Description</span></label>
+                        <input id="expenseDesc" type="text" placeholder="مطعم، تذاكر..."
+                            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm outline-none">
                     </div>
                 </div>
 
                 <div id="simpleExpenseWrapper"
                     class="space-y-4 bg-blue-50/30 dark:bg-blue-900/10 p-4 rounded-xl border border-blue-50 dark:border-blue-900/30">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase">
-                            <span class="ar-text">إجمالي المبلغ</span><span class="en-text">Total Amount</span>
-                        </label>
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase"><span
+                                class="ar-text">إجمالي المبلغ</span><span class="en-text">Total Amount</span></label>
                         <input id="expenseAmount" type="number" min="0" step="any" placeholder="0.00"
-                            class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700/50 rounded-xl text-xl font-black text-blue-600 dark:text-blue-400 outline-none focus:ring-2 focus:ring-blue-500 text-center transition">
+                            class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700/50 rounded-xl text-xl font-black text-blue-600 dark:text-blue-400 text-center outline-none">
                     </div>
                     <div class="pt-2">
                         <div class="flex justify-between items-center mb-3">
-                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase">
-                                <span class="ar-text">توزيع المصروف</span><span class="en-text">Split Amount</span>
-                            </label>
+                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase"><span
+                                    class="ar-text">توزيع المصروف</span><span class="en-text">Split
+                                    Amount</span></label>
                             <button type="button" onclick="distributeEqually()"
-                                class="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 font-bold cursor-pointer transition">
-                                <span class="ar-text">تقسيم بالتساوي 🪄</span><span class="en-text">Split Equally
-                                    🪄</span>
-                            </button>
+                                class="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg font-bold"><span
+                                    class="ar-text">تقسيم بالتساوي 🪄</span><span class="en-text">Split Equally
+                                    🪄</span></button>
                         </div>
                         <div id="sharesInputList" class="space-y-2 max-h-40 overflow-y-auto pr-1 custom-scrollbar">
                         </div>
@@ -450,1205 +391,91 @@
                     <div
                         class="bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800/50 space-y-3">
                         <div class="grid grid-cols-12 gap-2">
-                            <input id="invoiceItemName" type="text"
-                                class="col-span-7 sm:col-span-8 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500">
-                            <input id="invoiceItemPrice" type="number" min="0" step="any"
-                                class="col-span-5 sm:col-span-4 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500 font-mono font-bold text-center">
+                            <input id="invoiceItemName" type="text" placeholder="اسم البند"
+                                class="col-span-7 sm:col-span-8 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm outline-none">
+                            <input id="invoiceItemPrice" type="number" min="0" step="any" placeholder="السعر"
+                                class="col-span-5 sm:col-span-4 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-mono font-bold text-center outline-none">
                         </div>
                         <div>
                             <label
-                                class="block text-[10px] font-bold text-indigo-800 dark:text-indigo-300 mb-1.5 uppercase">
-                                <span class="ar-text">تحديد المشتركين في البند:</span><span class="en-text">Select item
-                                    participants:</span>
-                            </label>
+                                class="block text-[10px] font-bold text-indigo-800 dark:text-indigo-300 mb-1.5 uppercase"><span
+                                    class="ar-text">تحديد المشتركين في البند:</span><span class="en-text">Select item
+                                    participants:</span></label>
                             <div id="invoiceItemMembersBox"
                                 class="flex flex-wrap gap-2 p-2 bg-white/60 dark:bg-gray-800/60 rounded-lg border border-indigo-100 dark:border-gray-700 max-h-24 overflow-y-auto text-xs custom-scrollbar">
                             </div>
                         </div>
                         <button type="button" onclick="addInvoiceItemToArray()"
-                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm py-2 rounded-lg font-bold transition cursor-pointer">
-                            <span class="ar-text">إدراج البند ➕</span><span class="en-text">Add Item ➕</span>
-                        </button>
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm py-2 rounded-lg font-bold"><span
+                                class="ar-text">إدراج البند ➕</span><span class="en-text">Add Item ➕</span></button>
                     </div>
 
-                    <div class="space-y-1.5 pt-2">
-                        <div id="temporaryInvoiceItemsList"
-                            class="space-y-1.5 max-h-32 overflow-y-auto custom-scrollbar"></div>
+                    <div id="temporaryInvoiceItemsList" class="space-y-1.5 max-h-32 overflow-y-auto custom-scrollbar">
                     </div>
 
                     <div class="grid grid-cols-3 gap-3 border-t border-gray-100 dark:border-gray-700 pt-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">
-                                <span class="ar-text">خصم %</span><span class="en-text">Disc %</span>
-                            </label>
+                            <label
+                                class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase"><span
+                                    class="ar-text">خصم %</span><span class="en-text">Disc %</span></label>
                             <input id="invoiceDiscountPercent" type="number" min="0" value="0"
                                 oninput="updateInvoiceLiveSummary()"
-                                class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-rose-600 dark:text-rose-400 outline-none focus:ring-2 focus:ring-blue-500 font-bold text-center">
+                                class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-rose-600 dark:text-rose-400 font-bold text-center outline-none">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">
-                                <span class="ar-text">خدمة %</span><span class="en-text">Serv %</span>
-                            </label>
+                            <label
+                                class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase"><span
+                                    class="ar-text">خدمة %</span><span class="en-text">Serv %</span></label>
                             <input id="invoiceServicePercent" type="number" min="0" value="12"
                                 oninput="updateInvoiceLiveSummary()"
-                                class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 font-bold text-center">
+                                class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-bold text-center outline-none">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">
-                                <span class="ar-text">ضريبة %</span><span class="en-text">VAT %</span>
-                            </label>
+                            <label
+                                class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase"><span
+                                    class="ar-text">ضريبة %</span><span class="en-text">VAT %</span></label>
                             <input id="invoiceVatPercent" type="number" min="0" value="14"
                                 oninput="updateInvoiceLiveSummary()"
-                                class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 font-bold text-center">
+                                class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-bold text-center outline-none">
                         </div>
                     </div>
 
                     <div
-                        class="bg-gray-900 dark:bg-gray-950 text-gray-100 p-4 rounded-xl text-sm space-y-1.5 font-mono shadow-inner border border-gray-800">
-                        <div class="flex justify-between opacity-80">
-                            <span><span class="ar-text">مجموع البنود:</span><span
-                                    class="en-text">Subtotal:</span></span>
-                            <span id="lblInvoiceSubtotal">0.00</span>
-                        </div>
-                        <div class="flex justify-between text-rose-400 opacity-90">
-                            <span><span class="ar-text">قيمة الخصم:</span><span class="en-text">Discount:</span></span>
-                            <span id="lblInvoiceDiscountCost">0.00</span>
-                        </div>
-                        <div class="flex justify-between text-blue-300 opacity-90">
-                            <span><span class="ar-text">خدمة + ضريبة:</span><span class="en-text">Serv +
-                                    VAT:</span></span>
-                            <span id="lblInvoiceTaxesCost">0.00</span>
-                        </div>
+                        class="bg-gray-900 dark:bg-gray-950 text-gray-100 p-4 rounded-xl text-sm space-y-1.5 font-mono">
+                        <div class="flex justify-between opacity-80"><span><span class="ar-text">مجموع
+                                    البنود:</span><span class="en-text">Subtotal:</span></span><span
+                                id="lblInvoiceSubtotal">0.00</span></div>
+                        <div class="flex justify-between text-rose-400 opacity-90"><span><span class="ar-text">قيمة
+                                    الخصم:</span><span class="en-text">Discount:</span></span><span
+                                id="lblInvoiceDiscountCost">0.00</span></div>
+                        <div class="flex justify-between text-blue-300 opacity-90"><span><span class="ar-text">خدمة +
+                                    ضريبة:</span><span class="en-text">Serv + VAT:</span></span><span
+                                id="lblInvoiceTaxesCost">0.00</span></div>
                         <div
                             class="flex justify-between text-emerald-400 font-black border-t border-gray-700 pt-2 mt-2 text-xl">
-                            <span><span class="ar-text">الإجمالي:</span><span class="en-text">Total:</span></span>
-                            <span id="lblInvoiceGrandTotal">0.00</span>
-                        </div>
+                            <span><span class="ar-text">الإجمالي:</span><span class="en-text">Total:</span></span><span
+                                id="lblInvoiceGrandTotal">0.00</span></div>
                     </div>
                 </div>
             </div>
 
             <div
                 class="flex gap-3 pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto bg-white dark:bg-gray-800">
+                <button type="button" id="modalDeleteBtn" onclick="deleteExpenseFromModal()"
+                    class="hidden bg-rose-600 hover:bg-rose-700 text-white px-5 py-3.5 rounded-xl text-base font-bold shadow-md">
+                    <span class="ar-text">🗑️ حذف</span><span class="en-text">🗑️ Delete</span>
+                </button>
                 <button id="submitExpenseBtn" onclick="addExpense()"
-                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl text-base font-bold transition cursor-pointer shadow-md">
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl text-base font-bold shadow-md">
                     <span class="ar-text">✔️ حفظ البيانات</span><span class="en-text">✔️ Save</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="toastContainer" class="fixed bottom-5 left-5 z-[9999] flex flex-col gap-2"></div>
+    <div id="toastContainer" class="fixed bottom-5 left-5 z-[9999] flex flex-col gap-2.5 max-w-sm w-full pe-5"></div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDkgvi4WXRl9DXgEml1x5JNypEJW5j5LPc",
-            authDomain: "tripexpensesapp.firebaseapp.com",
-            projectId: "tripexpensesapp",
-            storageBucket: "tripexpensesapp.firebasestorage.app",
-            messagingSenderId: "938835963171",
-            appId: "1:938835963171:web:701933050b0d966afb3096"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        let trips = [];
-        let activeTripId = null;
-        let editingExpenseId = null;
-        let unsubscribeActiveTrip = null;
-
-        let currentExpenseMode = 'simple';
-        let tempInvoiceItems = [];
-        let currentLang = 'ar';
-        let myChart = null;
-
-        window.isSavingLocally = false;
-
-        const defaultCategoriesAr = ['عام', 'طعام', 'سكن', 'مواصلات', 'أنشطة', 'مشتريات'];
-        const defaultCategoriesEn = ['General', 'Food', 'Housing', 'Transport', 'Activities', 'Shopping'];
-
-        const t = (arText, enText) => currentLang === 'en' ? enText : arText;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('app_lang');
-            if (savedLang) setLang(savedLang);
-            else setLang('ar');
-
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-                updateThemeIcons(true);
-            } else {
-                updateThemeIcons(false);
-            }
-
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-
-            const storedTrips = localStorage.getItem('app_trips_data');
-            const storedActiveId = localStorage.getItem('app_active_trip_id');
-            if (storedTrips) trips = JSON.parse(storedTrips);
-            if (storedActiveId) activeTripId = storedActiveId;
-
-            updateTripsDropdown();
-            if (activeTripId) {
-                listenToActiveTripCloud();
-            } else {
-                refreshActiveTripUI();
-            }
-        });
-
-        function showToast(message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 toast-enter border border-gray-700 text-xs md:text-sm font-bold max-w-sm';
-            toast.innerHTML = `<span>🔔</span> <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = currentLang === 'ar' ? 'translateX(100%)' : 'translateX(-100%)';
-                toast.style.transition = 'all 0.4s ease';
-                setTimeout(() => toast.remove(), 400);
-            }, 5000);
-        }
-
-        window.toggleLang = function () { setLang(currentLang === 'ar' ? 'en' : 'ar'); }
-
-        function setLang(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            localStorage.setItem('app_lang', lang);
-
-            if (getActiveTrip()) refreshActiveTripUI();
-            else updateTripsDropdown();
-
-            document.getElementById('tripNameInput').placeholder = t('اسم الرحلة (مثلاً: دهب 2026)', 'Trip Name (e.g. Dahab 2026)');
-            document.getElementById('tripDescInput').placeholder = t('معلومات عنها', 'Trip Description');
-            document.getElementById('joinTripCodeInput').placeholder = t('اكتب الكود هنا', 'Enter Code Here');
-            document.getElementById('memberNameInput').placeholder = t('اسم الشخص', 'Name');
-            document.getElementById('memberPhoneInput').placeholder = t('رقم الموبايل', 'Phone Number');
-            document.getElementById('expenseDesc').placeholder = t('غداء بمطعم، تذاكر...', 'Restaurant, Tickets...');
-            document.getElementById('invoiceItemName').placeholder = t('اسم البند', 'Item Name');
-            document.getElementById('invoiceItemPrice').placeholder = t('السعر', 'Price');
-            document.getElementById('newCategoryInput').placeholder = t('اسم بند جديد...', 'New Category Name...');
-        }
-
-        window.toggleTheme = function () {
-            const htmlClasses = document.documentElement.classList;
-            htmlClasses.toggle('dark');
-            const isDark = htmlClasses.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateThemeIcons(isDark);
-            if (getActiveTrip()) calculateEverything(getActiveTrip());
-        }
-
-        function updateThemeIcons(isDark) {
-            document.getElementById('themeIconAr').innerText = isDark ? '☀️ نهاري' : '🌙 ليلي';
-            document.getElementById('themeIconEn').innerText = isDark ? '☀️ Light' : '🌙 Dark';
-        }
-
-        function getLocalIsoString() {
-            const now = new Date();
-            const tzOffset = now.getTimezoneOffset() * 60000;
-            return (new Date(now.getTime() - tzOffset)).toISOString().slice(0, 16);
-        }
-
-        window.formatToDateTimeLocalString = function (val) {
-            if (!val) return getLocalIsoString();
-            try {
-                // 1. في حالة كان التنسيق نصي ومضبوط مسبقاً بالشكل المطلوب YYYY-MM-DDTHH:mm
-                if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(val)) {
-                    return val.slice(0, 16);
-                }
-
-                let dt;
-                if (typeof val === 'object' && val.seconds) {
-                    dt = new Date(val.seconds * 1000);
-                } else if (typeof val === 'number' || (typeof val === 'string' && !isNaN(val) && val.trim() !== '')) {
-                    let num = Number(val);
-                    if (num < 10000000000) num *= 1000;
-                    dt = new Date(num);
-                } else {
-                    dt = new Date(val);
-                }
-
-                // 2. معالجة ذكية في حال فشل المتصفح في قراءة التاريخ (مثل حالة: '٣ يوليو، ١٢:٠٢ ص')
-                if (!dt || isNaN(dt.getTime())) {
-                    if (typeof val === 'string') {
-                        // أ- تحويل الأرقام العربية والفارسية إلى إنجليزية وإزالة علامات التنسيق المخفية (RTL marks)
-                        let cleanStr = val.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-                            .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
-                            .replace(/[\u200E\u200F\u061C\u200B-\u200D\uFEFF]/g, '')
-                            .trim();
-
-                        // ب- تحديد هل الوقت صباحاً (AM) أم مساءً (PM)
-                        let isPM = /م|مساء|pm/i.test(cleanStr);
-                        let isAM = /ص|صباح|am/i.test(cleanStr);
-                        cleanStr = cleanStr.replace(/[مص]|مساء|صباح|am|pm/gi, '').trim();
-
-                        // ج- تحويل أسماء الأشهر العربية والنصية إلى أرقام لتسهيل معالجتها
-                        const monthMap = {
-                            'كانون الثاني': 1, 'تشرين الثاني': 11, 'تشرين الأول': 10, 'كانون الأول': 12,
-                            'يناير': 1, 'جانفي': 1, 'فبراير': 2, 'فيفري': 2, 'شباط': 2, 'مارس': 3, 'آذار': 3,
-                            'أبريل': 4, 'أفريل': 4, 'نيسان': 4, 'مايو': 5, 'ماي': 5, 'أيار': 5, 'يونيو': 6,
-                            'جوان': 6, 'حزيران': 6, 'يوليو': 7, 'جويلية': 7, 'تموز': 7, 'أغسطس': 8, 'أوت': 8,
-                            'آب': 8, 'سبتمبر': 9, 'أيلول': 9, 'أكتوبر': 10, 'نوفمبر': 11, 'ديسمبر': 12
-                        };
-
-                        // ترتيب الأشهر حسب الطول التنازلي لتجنب تداخل الأسماء المركبة (مثل تشرين الأول وتشرين الثاني)
-                        const sortedMonths = Object.keys(monthMap).sort((a, b) => b.length - a.length);
-                        for (const mName of sortedMonths) {
-                            if (cleanStr.includes(mName)) {
-                                const mVal = monthMap[mName];
-                                // استبدال اسم الشهر برقم محاط بشرطات ليناسب الخطوة التالية (مثال: "3 يوليو" تصبح "3-7-")
-                                cleanStr = cleanStr.replace(new RegExp('\\s*' + mName + '\\s*'), '-' + mVal + '-');
-                                break;
-                            }
-                        }
-
-                        // د- استخراج اليوم، الشهر، (والسنة إن وجدت)، والساعات والدقائق
-                        let dateParts = cleanStr.match(/(\d{1,4})[\/\-\.](\d{1,2})(?:[\/\-\.](\d{1,4}))?/);
-                        let timeParts = cleanStr.match(/(\d{1,2}):(\d{2})/);
-
-                        if (dateParts) {
-                            let p1 = parseInt(dateParts[1], 10);
-                            let p2 = parseInt(dateParts[2], 10);
-                            let p3 = dateParts[3] ? parseInt(dateParts[3], 10) : null;
-
-                            let year = new Date().getFullYear(); // السنة الافتراضية هي الحالية إذا لم تذكر
-                            let month = 1;
-                            let day = 1;
-
-                            // تحديد الترتيب (يوم/شهر أم شهر/يوم أم سنة/شهر/يوم)
-                            if (p1 > 1000) { year = p1; month = p2; day = p3 || 1; }
-                            else if (p3 && p3 > 1000) { day = p1; month = p2; year = p3; }
-                            else { day = p1; month = p2; } // التنسيق الافتراضي في مصر والعرب (يوم/شهر)
-
-                            let hours = 0;
-                            let minutes = 0;
-                            if (timeParts) {
-                                hours = parseInt(timeParts[1], 10);
-                                minutes = parseInt(timeParts[2], 10);
-                                if (isPM && hours < 12) hours += 12; // تحويل لنظام 24 ساعة
-                                if (isAM && hours === 12) hours = 0;
-                            }
-
-                            dt = new Date(year, month - 1, day, hours, minutes);
-                        }
-                    }
-                }
-
-                if (!dt || isNaN(dt.getTime())) return getLocalIsoString();
-
-                // إعادة بناء النص بإضافة الأصفار الناقصة (Leading Zeros) التي يطلبها المتصفح إجبارياً
-                const year = dt.getFullYear();
-                const month = String(dt.getMonth() + 1).padStart(2, '0');
-                const day = String(dt.getDate()).padStart(2, '0');
-                const hours = String(dt.getHours()).padStart(2, '0');
-                const minutes = String(dt.getMinutes()).padStart(2, '0');
-
-                return `${year}-${month}-${day}T${hours}:${minutes}`;
-            } catch (e) {
-                return getLocalIsoString();
-            }
-        }
-
-        function formatDateString(isoString) {
-            if (!isoString) return '';
-            const dt = new Date(isoString);
-            if (isNaN(dt.getTime())) return String(isoString);
-            return dt.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        }
-
-        window.openExpenseModal = function () {
-            const trip = getActiveTrip();
-            if (!trip || trip.members.length === 0) {
-                return alert(t('الرجاء إضافة فرد واحد على الأقل قبل تسجيل المصروفات.', 'Please add at least one member before logging expenses.'));
-            }
-            updateCategoryDropdown(trip);
-            document.getElementById('expenseModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            if (editingExpenseId === null) resetExpenseForm(trip);
-        }
-
-        window.closeExpenseModal = function () {
-            document.getElementById('expenseModal').classList.add('hidden');
-            document.body.style.overflow = '';
-            editingExpenseId = null;
-        }
-
-        function updateCategoriesListUI(trip) {
-            const container = document.getElementById('categoriesList');
-            container.innerHTML = '';
-            let categories = trip.categories;
-            if (!categories || categories.length === 0) {
-                categories = currentLang === 'ar' ? [...defaultCategoriesAr] : [...defaultCategoriesEn];
-                trip.categories = categories;
-            }
-            categories.forEach(cat => {
-                const div = document.createElement('div');
-                div.className = "bg-gray-100 dark:bg-gray-700/80 text-gray-800 dark:text-gray-200 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-2 border border-gray-200 dark:border-gray-600";
-                div.innerHTML = `
-                    <span>${cat}</span>
-                    <button onclick="editCategoryName('${cat}')" class="text-blue-500 hover:text-blue-700" title="${t('تعديل', 'Edit')}">✏️</button>
-                    <button onclick="deleteCategoryName('${cat}')" class="text-rose-500 hover:text-rose-700" title="${t('حذف', 'Delete')}">🗑️</button>
-                `;
-                container.appendChild(div);
-            });
-            updateCategoryDropdown(trip);
-        }
-
-        window.addCategoryFromUI = function () {
-            const trip = getActiveTrip();
-            const input = document.getElementById('newCategoryInput');
-            const newCat = input.value.trim();
-            if (!newCat) return alert(t('الرجاء كتابة اسم البند الجديد', 'Please enter a category name'));
-            if (!trip.categories) trip.categories = currentLang === 'ar' ? [...defaultCategoriesAr] : [...defaultCategoriesEn];
-
-            if (!trip.categories.includes(newCat)) {
-                trip.categories.push(newCat);
-                input.value = '';
-                saveTripToCloud(trip);
-                updateCategoriesListUI(trip);
-                showToast(t(`تمت إضافة بند "${newCat}" بنجاح`, `Category "${newCat}" added successfully`));
-            } else {
-                alert(t('هذا البند موجود مسبقاً!', 'This category already exists!'));
-            }
-        }
-
-        window.editCategoryName = function (oldName) {
-            const trip = getActiveTrip();
-            const newName = prompt(t('أدخل الاسم الجديد للبند:', 'Enter new name for category:'), oldName);
-            if (newName && newName.trim() !== '' && newName.trim() !== oldName) {
-                const cleaned = newName.trim();
-                const idx = trip.categories.indexOf(oldName);
-                if (idx !== -1) {
-                    trip.categories[idx] = cleaned;
-                    if (trip.expenses) {
-                        trip.expenses.forEach(e => {
-                            if (e.category === oldName) e.category = cleaned;
-                        });
-                    }
-                    saveTripToCloud(trip);
-                    updateCategoriesListUI(trip);
-                    updateExpensesTable(trip);
-                    showToast(t(`تم تعديل البند من "${oldName}" إلى "${cleaned}"`, `Category changed from "${oldName}" to "${cleaned}"`));
-                }
-            }
-        }
-
-        window.deleteCategoryName = function (catName) {
-            const trip = getActiveTrip();
-            if (trip.categories.length <= 1) {
-                return alert(t('لا يمكن حذف كل البنود! يجب الإبقاء على بند واحد على الأقل.', 'Cannot delete all categories! Keep at least one.'));
-            }
-            if (confirm(t(`هل أنت متأكد من حذف البند "${catName}"؟`, `Are you sure you want to delete category "${catName}"?`))) {
-                trip.categories = trip.categories.filter(c => c !== catName);
-                saveTripToCloud(trip);
-                updateCategoriesListUI(trip);
-                showToast(t(`تم حذف البند "${catName}"`, `Category "${catName}" deleted`));
-            }
-        }
-
-        function updateCategoryDropdown(trip) {
-            const select = document.getElementById('expenseCategory');
-            select.innerHTML = '';
-            let categories = trip.categories || (currentLang === 'ar' ? [...defaultCategoriesAr] : [...defaultCategoriesEn]);
-            categories.forEach(cat => {
-                const opt = document.createElement('option');
-                opt.value = cat; opt.textContent = cat;
-                select.appendChild(opt);
-            });
-        }
-
-        function listenToActiveTripCloud() {
-            if (unsubscribeActiveTrip) unsubscribeActiveTrip();
-            if (!activeTripId) { refreshActiveTripUI(); return; }
-
-            // 1. علم (Flag) لمعرفة إن دي أول مرة يتم تحميل البيانات عند فتح الصفحة أو عمل Refresh
-            let isFirstSnapshot = true;
-
-            unsubscribeActiveTrip = onSnapshot(doc(db, "trips", activeTripId), (docSnap) => {
-                if (docSnap.exists()) {
-                    const cloudData = docSnap.data();
-                    let idx = trips.findIndex(t => t.id === activeTripId);
-
-                    // 2. لا تظهر أي إشعارات توست لو كانت دي المرة الأولى أو لو كان المستخدم هو اللي بيحفظ بنفسه
-                    if (!isFirstSnapshot && !window.isSavingLocally && trips[idx]) {
-                        const oldExp = trips[idx].expenses || [];
-                        const newExp = cloudData.expenses || [];
-
-                        let msgAr = '';
-                        let msgEn = '';
-
-                        if (newExp.length > oldExp.length) {
-                            const added = newExp.find(ne => !oldExp.some(oe => oe.id === ne.id));
-                            if (added) {
-                                msgAr = `✨ تمت إضافة مصروف جديد: [${added.description}] بمبلغ (${added.amount.toFixed(0)}) بواسطة ${added.paidBy}`;
-                                msgEn = `✨ Added new expense: [${added.description}] (${added.amount.toFixed(0)}) by ${added.paidBy}`;
-                            }
-                        } else if (newExp.length < oldExp.length) {
-                            const removed = oldExp.find(oe => !newExp.some(ne => ne.id === oe.id));
-                            if (removed) {
-                                msgAr = `🗑️ تم حذف المصروف: [${removed.description}] (${removed.amount.toFixed(0)})`;
-                                msgEn = `🗑️ Deleted expense: [${removed.description}] (${removed.amount.toFixed(0)})`;
-                            }
-                        } else {
-                            // 3. مقارنة دقيقة للخصائص الأساسية للمصروف لتجنب تداخل تعديل التصنيفات
-                            const modified = newExp.find(ne => {
-                                const oe = oldExp.find(o => o.id === ne.id);
-                                return oe && (
-                                    oe.description !== ne.description ||
-                                    oe.amount !== ne.amount ||
-                                    oe.paidBy !== ne.paidBy ||
-                                    oe.category !== ne.category
-                                );
-                            });
-                            if (modified) {
-                                msgAr = `✏️ تم تعديل بيانات مصروف: [${modified.description}] (${modified.amount.toFixed(0)})`;
-                                msgEn = `✏️ Modified expense: [${modified.description}] (${modified.amount.toFixed(0)})`;
-                            }
-                        }
-
-                        if (msgAr) {
-                            showToast(t(msgAr, msgEn));
-                            if ('Notification' in window && Notification.permission === 'granted') {
-                                new Notification(t('تحديث في رحلة: ' + cloudData.name, 'Trip Update: ' + cloudData.name), {
-                                    body: t(msgAr, msgEn)
-                                });
-                            }
-                        }
-                    }
-
-                    const fullTrip = {
-                        id: cloudData.id,
-                        name: cloudData.name,
-                        description: cloudData.description || '',
-                        members: cloudData.members || [],
-                        expenses: cloudData.expenses || [],
-                        categories: cloudData.categories || (currentLang === 'ar' ? [...defaultCategoriesAr] : [...defaultCategoriesEn])
-                    };
-                    if (idx !== -1) trips[idx] = fullTrip;
-                    else trips.push(fullTrip);
-
-                    localStorage.setItem('app_trips_data', JSON.stringify(trips));
-                    updateTripsDropdown();
-                    refreshActiveTripUI();
-                } else {
-                    refreshActiveTripUI();
-                }
-                window.isSavingLocally = false;
-                // 4. بعد انتهاء أول لقطة بنجاح، بنحول العلم لـ false عشان التحديثات القادمة تظهر كإشعارات عادي
-                isFirstSnapshot = false;
-            }, (error) => console.error("Sync Error:", error));
-        }
-
-        function saveTripToCloud(trip) {
-            if (!trip) return;
-            window.isSavingLocally = true;
-            setDoc(doc(db, "trips", trip.id), trip).catch(err => {
-                console.error("Upload Error:", err);
-                window.isSavingLocally = false;
-            });
-        }
-
-        window.clearLocalTracking = function () {
-            if (confirm(t('تأكيد مسح كل الرحلات المحفوظة على المتصفح؟', 'Clear all saved trips from this browser?'))) {
-                localStorage.removeItem('app_trips_data');
-                localStorage.removeItem('app_active_trip_id');
-                trips = []; activeTripId = null;
-                if (unsubscribeActiveTrip) unsubscribeActiveTrip();
-                updateTripsDropdown(); refreshActiveTripUI();
-            }
-        }
-
-        window.deleteCurrentTrip = function () {
-            if (!activeTripId) return;
-            if (!confirm(t('تأكيد إزالة هذه الرحلة من الجهاز؟', 'Remove this trip from current device?'))) return;
-            trips = trips.filter(t => t.id !== activeTripId);
-            localStorage.setItem('app_trips_data', JSON.stringify(trips));
-            if (unsubscribeActiveTrip) { unsubscribeActiveTrip(); unsubscribeActiveTrip = null; }
-            activeTripId = trips.length > 0 ? trips[0].id : null;
-            if (activeTripId) {
-                localStorage.setItem('app_active_trip_id', activeTripId);
-                updateTripsDropdown(); listenToActiveTripCloud();
-            } else {
-                localStorage.removeItem('app_active_trip_id');
-                updateTripsDropdown(); refreshActiveTripUI();
-            }
-        }
-
-        function getActiveTrip() { return trips.find(t => t.id === activeTripId); }
-
-        window.createNewTrip = function () {
-            const name = document.getElementById('tripNameInput').value.trim();
-            const desc = document.getElementById('tripDescInput').value.trim();
-            if (!name) return alert(t('الرجاء إدخال اسم الرحلة', 'Please enter a trip name'));
-
-            const shortCode = 'R' + Math.floor(100000 + Math.random() * 900000);
-            const newTrip = {
-                id: shortCode, name: name, description: desc, members: [], expenses: [],
-                categories: currentLang === 'ar' ? [...defaultCategoriesAr] : [...defaultCategoriesEn]
-            };
-
-            activeTripId = shortCode;
-            localStorage.setItem('app_active_trip_id', activeTripId);
-            trips.push(newTrip); updateTripsDropdown();
-            document.getElementById('tripNameInput').value = ''; document.getElementById('tripDescInput').value = '';
-            saveTripToCloud(newTrip); listenToActiveTripCloud();
-        }
-
-        window.joinTripById = function () {
-            const code = document.getElementById('joinTripCodeInput').value.trim().toUpperCase();
-            if (!code) return alert(t('الرجاء إدخال الكود', 'Please enter the code'));
-
-            getDoc(doc(db, "trips", code)).then((docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    activeTripId = code; localStorage.setItem('app_active_trip_id', activeTripId);
-                    if (!trips.some(t => t.id === code)) trips.push(data);
-                    document.getElementById('joinTripCodeInput').value = '';
-                    updateTripsDropdown(); listenToActiveTripCloud();
-                } else {
-                    alert(t('الكود غير صحيح أو الرحلة غير موجودة.', 'Invalid code or trip not found.'));
-                }
-            }).catch(err => alert('Error: ' + err.message));
-        }
-
-        function updateTripsDropdown() {
-            const select = document.getElementById('activeTripSelect'); select.innerHTML = '';
-            if (trips.length === 0) {
-                select.innerHTML = `<option value="">${t('لا توجد رحلات...', 'No trips...')}</option>`; return;
-            }
-            trips.forEach(trip => {
-                const opt = document.createElement('option');
-                opt.value = trip.id; opt.textContent = trip.name;
-                if (trip.id === activeTripId) opt.selected = true;
-                select.appendChild(opt);
-            });
-        }
-
-        window.switchTrip = function () {
-            activeTripId = document.getElementById('activeTripSelect').value || null;
-            editingExpenseId = null;
-            localStorage.setItem('app_active_trip_id', activeTripId);
-            listenToActiveTripCloud();
-        }
-
-        function refreshActiveTripUI() {
-            const mainContent = document.getElementById('mainAppContent');
-            const warningBox = document.getElementById('noTripsWarning');
-            const infoBox = document.getElementById('currentTripInfoBox');
-            const currentTrip = getActiveTrip();
-
-            if (!currentTrip || !currentTrip.members) {
-                mainContent.classList.add('hidden'); warningBox.classList.remove('hidden'); infoBox.classList.add('hidden'); return;
-            }
-            mainContent.classList.remove('hidden'); warningBox.classList.add('hidden'); infoBox.classList.remove('hidden');
-
-            infoBox.innerHTML = `
-                <div class="flex-1"><strong>${t('الوصف:', 'Description:')}</strong> ${currentTrip.description || '-'}</div>
-                <div class="bg-blue-600 text-white font-mono px-4 py-1.5 rounded-lg font-bold text-center select-all shadow-sm">
-                    🔑 ${t('الكود:', 'Code:')} ${currentTrip.id}
-                </div>
-            `;
-            updateMembersListUI(currentTrip); updateExpensePayerDropdown(currentTrip);
-            updateCategoriesListUI(currentTrip);
-            renderShareInputs(currentTrip); renderInvoiceItemMembersCheckboxes(currentTrip);
-            updateExpensesTable(currentTrip); calculateEverything(currentTrip);
-        }
-
-        window.addMember = function () {
-            const currentTrip = getActiveTrip();
-            const name = document.getElementById('memberNameInput').value.trim();
-            const phone = document.getElementById('memberPhoneInput').value.trim();
-            if (!name) return alert(t('الرجاء إدخال الاسم', 'Please enter a name'));
-            if (!currentTrip.members) currentTrip.members = [];
-            if (currentTrip.members.some(m => m.name === name)) return alert(t('الاسم مسجل مسبقاً', 'Name exists'));
-
-            currentTrip.members.push({ name: name, phone: phone });
-            document.getElementById('memberNameInput').value = ''; document.getElementById('memberPhoneInput').value = '';
-            saveTripToCloud(currentTrip);
-        }
-
-        window.editMemberName = function (oldName) {
-            const trip = getActiveTrip();
-            if (!trip) return;
-            const newName = prompt(t('أدخل الاسم الجديد للعضو:', 'Enter new name for member:'), oldName);
-            if (newName && newName.trim() !== '' && newName.trim() !== oldName) {
-                const cleaned = newName.trim();
-                if (trip.members.some(m => m.name === cleaned)) {
-                    return alert(t('هذا الاسم موجود مسبقاً!', 'This name already exists!'));
-                }
-                const member = trip.members.find(m => m.name === oldName);
-                if (member) {
-                    member.name = cleaned;
-                    if (trip.expenses) {
-                        trip.expenses.forEach(e => {
-                            if (e.paidBy === oldName) e.paidBy = cleaned;
-                            if (e.shares && e.shares[oldName] !== undefined) {
-                                e.shares[cleaned] = e.shares[oldName];
-                                delete e.shares[oldName];
-                            }
-                            if (e.invoiceItems) {
-                                e.invoiceItems.forEach(item => {
-                                    if (item.members) {
-                                        item.members = item.members.map(m => m === oldName ? cleaned : m);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    saveTripToCloud(trip);
-                    refreshActiveTripUI();
-                    showToast(t(`تم تعديل الاسم من "${oldName}" إلى "${cleaned}"`, `Name changed from "${oldName}" to "${cleaned}"`));
-                }
-            }
-        }
-
-        window.deleteMember = function (memberName) {
-            const trip = getActiveTrip();
-            if (!trip) return;
-            if (confirm(t(`هل أنت متأكد من حذف العضو "${memberName}"؟`, `Are you sure you want to delete member "${memberName}"?`))) {
-                trip.members = trip.members.filter(m => m.name !== memberName);
-                if (trip.expenses) {
-                    trip.expenses.forEach(e => {
-                        if (e.shares && e.shares[memberName] !== undefined) {
-                            delete e.shares[memberName];
-                        }
-                    });
-                }
-                saveTripToCloud(trip);
-                refreshActiveTripUI();
-                showToast(t(`تم حذف العضو "${memberName}"`, `Member "${memberName}" deleted`));
-            }
-        }
-
-        // --- (تم حذف زر الحذف 🗑️ من الهيكل البرمجي هنا) ---
-        function updateMembersListUI(trip) {
-            const container = document.getElementById('membersList'); container.innerHTML = '';
-            trip.members.forEach(member => {
-                const div = document.createElement('div');
-                div.className = "bg-gray-50 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200 text-xs font-semibold px-3 py-2 rounded-lg flex justify-between items-center border border-gray-100 dark:border-gray-600";
-                div.innerHTML = `
-                  <div class="flex flex-col flex-1 truncate">
-                    <span class="truncate font-bold text-sm">👤 ${member.name}</span>
-                    <span class="text-gray-400 font-mono text-[10px] mt-0.5">${member.phone || t('بدون هاتف', 'No phone')}</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 ms-2">
-                    <button onclick="editMemberName('${member.name}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 dark:bg-blue-900/40 p-1.5 rounded-lg transition" title="${t('تعديل الاسم', 'Edit Name')}">✏️</button>
-                  </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function updateExpensePayerDropdown(trip) {
-            const select = document.getElementById('expensePayer');
-            select.innerHTML = `<option value="">${t('اختيار شخص...', 'Select Person...')}</option>`;
-            trip.members.forEach(m => {
-                const opt = document.createElement('option'); opt.value = m.name; opt.textContent = m.name; select.appendChild(opt);
-            });
-        }
-
-        function renderShareInputs(trip) {
-            const container = document.getElementById('sharesInputList'); container.innerHTML = '';
-            trip.members.forEach(m => {
-                const div = document.createElement('div');
-                div.className = "flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-lg border border-gray-100 dark:border-gray-700 text-xs";
-                div.innerHTML = `
-                  <input type="checkbox" id="check_${m.name}" checked class="rounded border-gray-300 w-4 h-4 cursor-pointer">
-                  <label for="check_${m.name}" class="flex-1 font-bold text-gray-700 dark:text-gray-300 cursor-pointer truncate">${m.name}</label>
-                  <input type="number" id="share_${m.name}" placeholder="0" class="w-20 px-2 py-1.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded text-center font-mono font-bold outline-none focus:border-blue-500">
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function renderInvoiceItemMembersCheckboxes(trip) {
-            const box = document.getElementById('invoiceItemMembersBox'); box.innerHTML = '';
-            trip.members.forEach(m => {
-                const label = document.createElement('label');
-                label.className = "flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1.5 rounded-lg cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-800 transition text-[11px] font-bold text-indigo-900 dark:text-indigo-200 border border-indigo-100 dark:border-indigo-800/50";
-                label.innerHTML = `<input type="checkbox" value="${m.name}" name="invoiceMemberItemCheckbox" checked class="w-3.5 h-3.5 rounded text-indigo-600 border-indigo-300 dark:border-indigo-600 bg-white dark:bg-gray-900"><span>${m.name}</span>`;
-                box.appendChild(label);
-            });
-        }
-
-        window.switchExpenseMode = function (mode) {
-            currentExpenseMode = mode;
-            const tSimp = document.getElementById('tabSimple'); const tInv = document.getElementById('tabInvoice');
-            const wSimp = document.getElementById('simpleExpenseWrapper'); const wInv = document.getElementById('invoiceExpenseWrapper');
-            if (mode === 'simple') {
-                tSimp.className = "flex-1 text-center py-2 text-sm font-bold rounded-lg bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm transition";
-                tInv.className = "flex-1 text-center py-2 text-sm font-bold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition";
-                wSimp.classList.remove('hidden'); wInv.classList.add('hidden');
-            } else {
-                tInv.className = "flex-1 text-center py-2 text-sm font-bold rounded-lg bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm transition";
-                tSimp.className = "flex-1 text-center py-2 text-sm font-bold rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition";
-                wInv.classList.remove('hidden'); wSimp.classList.add('hidden');
-                updateInvoiceLiveSummary();
-            }
-        }
-
-        window.addInvoiceItemToArray = function () {
-            const name = document.getElementById('invoiceItemName').value.trim();
-            const price = parseFloat(document.getElementById('invoiceItemPrice').value);
-            if (!name || isNaN(price) || price <= 0) return alert(t('بيانات البند غير صحيحة', 'Invalid item data'));
-            const members = Array.from(document.querySelectorAll('input[name="invoiceMemberItemCheckbox"]:checked')).map(cb => cb.value);
-            if (members.length === 0) return alert(t('حدد مشتركاً', 'Select members'));
-
-            tempInvoiceItems.push({ id: 'i_' + Date.now(), name, price, members });
-            document.getElementById('invoiceItemName').value = ''; document.getElementById('invoiceItemPrice').value = '';
-            renderTemporaryInvoiceItemsListUI(); updateInvoiceLiveSummary();
-        }
-
-        window.removeInvoiceItemFromArray = function (id) {
-            tempInvoiceItems = tempInvoiceItems.filter(i => i.id !== id);
-            renderTemporaryInvoiceItemsListUI(); updateInvoiceLiveSummary();
-        }
-
-        function renderTemporaryInvoiceItemsListUI() {
-            const container = document.getElementById('temporaryInvoiceItemsList'); container.innerHTML = '';
-            tempInvoiceItems.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-white dark:bg-gray-800 p-2 rounded border border-gray-100 dark:border-gray-700 shadow-sm";
-                div.innerHTML = `
-                    <div class="truncate flex-1"><strong class="text-gray-800 dark:text-gray-200 text-xs">${item.name}</strong><span class="text-[9px] text-gray-400 block">${item.members.join('، ')}</span></div>
-                    <div class="flex items-center gap-2"><span class="font-bold text-indigo-600 dark:text-indigo-400 font-mono text-xs">${item.price.toFixed(2)}</span><button onclick="removeInvoiceItemFromArray('${item.id}')" class="text-rose-500">❌</button></div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        window.updateInvoiceLiveSummary = function () {
-            let subtotal = tempInvoiceItems.reduce((s, i) => s + i.price, 0);
-            let d = parseFloat(document.getElementById('invoiceDiscountPercent').value) || 0;
-            let s = parseFloat(document.getElementById('invoiceServicePercent').value) || 0;
-            let v = parseFloat(document.getElementById('invoiceVatPercent').value) || 0;
-
-            let dCost = subtotal * (d / 100);
-            let aftD = subtotal - dCost;
-            let sCost = aftD * (s / 100);
-            let vCost = (aftD + sCost) * (v / 100);
-
-            document.getElementById('lblInvoiceSubtotal').textContent = subtotal.toFixed(2);
-            document.getElementById('lblInvoiceDiscountCost').textContent = `-${dCost.toFixed(2)}`;
-            document.getElementById('lblInvoiceTaxesCost').textContent = `+${(sCost + vCost).toFixed(2)}`;
-            document.getElementById('lblInvoiceGrandTotal').textContent = (aftD + sCost + vCost).toFixed(2);
-        }
-
-        window.distributeEqually = function () {
-            const t = parseFloat(document.getElementById('expenseAmount').value);
-            if (isNaN(t) || t <= 0) return;
-            const trip = getActiveTrip();
-            const checked = trip.members.filter(m => document.getElementById(`check_${m.name}`).checked);
-            if (checked.length === 0) return;
-            const eq = t / checked.length;
-            trip.members.forEach(m => {
-                const cb = document.getElementById(`check_${m.name}`);
-                const inp = document.getElementById(`share_${m.name}`);
-                if (inp) inp.value = (cb && cb.checked) ? eq.toFixed(2) : '';
-            });
-        }
-
-        window.addExpense = function () {
-            const trip = getActiveTrip();
-            const payer = document.getElementById('expensePayer').value;
-            const desc = document.getElementById('expenseDesc').value.trim();
-            const cat = document.getElementById('expenseCategory').value;
-
-            let rawDate = document.getElementById('expenseDateTime').value;
-            if (!rawDate && editingExpenseId !== null) {
-                const oldExp = trip.expenses.find(x => x.id === editingExpenseId);
-                let savedDate = oldExp ? (oldExp.rawDate || oldExp.dateTime || oldExp.date || oldExp.timestamp || oldExp.time) : null;
-                rawDate = formatToDateTimeLocalString(savedDate);
-            } else if (!rawDate) {
-                rawDate = getLocalIsoString();
-            }
-
-            if (!payer || !desc) return alert(t('أكمل البيانات الأساسية', 'Fill required fields'));
-
-            let fAmount = 0; let eShares = {}; let isInv = (currentExpenseMode === 'invoice');
-
-            if (!isInv) {
-                fAmount = parseFloat(document.getElementById('expenseAmount').value);
-                if (isNaN(fAmount) || fAmount <= 0) return alert(t('أدخل مبلغ صحيح', 'Invalid amount'));
-                let sum = 0;
-                trip.members.forEach(m => {
-                    const cb = document.getElementById(`check_${m.name}`);
-                    const inp = document.getElementById(`share_${m.name}`);
-                    let val = (cb && cb.checked) ? (parseFloat(inp.value) || 0) : 0;
-                    eShares[m.name] = val; sum += val;
-                });
-                if (Math.abs(sum - fAmount) > 0.5) return alert(t('مجموع التوزيع لا يساوي الإجمالي', 'Sum mismatch'));
-            } else {
-                if (tempInvoiceItems.length === 0) return;
-                let sub = tempInvoiceItems.reduce((s, i) => s + i.price, 0);
-                let d = parseFloat(document.getElementById('invoiceDiscountPercent').value) || 0;
-                let s = parseFloat(document.getElementById('invoiceServicePercent').value) || 0;
-                let v = parseFloat(document.getElementById('invoiceVatPercent').value) || 0;
-                let dCost = sub * (d / 100); let aft = sub - dCost; let sCost = aft * (s / 100); let vCost = (aft + sCost) * (v / 100);
-                fAmount = aft + sCost + vCost;
-
-                let bShares = {}; trip.members.forEach(m => bShares[m.name] = 0);
-                tempInvoiceItems.forEach(i => { let cpu = i.price / i.members.length; i.members.forEach(m => bShares[m] += cpu); });
-                let infl = sub > 0 ? (fAmount / sub) : 1; let calc = 0;
-                trip.members.forEach(m => { eShares[m.name] = parseFloat((bShares[m.name] * infl).toFixed(2)); calc += eShares[m.name]; });
-                let diff = fAmount - calc;
-                if (Math.abs(diff) > 0.01) {
-                    let first = trip.members.find(m => eShares[m.name] > 0);
-                    if (first) eShares[first.name] = parseFloat((eShares[first.name] + diff).toFixed(2));
-                }
-            }
-
-            if (!trip.expenses) trip.expenses = [];
-            const expData = {
-                id: editingExpenseId !== null ? editingExpenseId : 'e_' + Date.now(),
-                rawDate, paidBy: payer, category: cat || t('عام', 'General'), amount: fAmount, description: desc, shares: eShares,
-                isInvoice: isInv, invoiceItems: isInv ? tempInvoiceItems : [],
-                discountPercent: isInv ? parseFloat(document.getElementById('invoiceDiscountPercent').value) : 0,
-                servicePercent: isInv ? parseFloat(document.getElementById('invoiceServicePercent').value) : 0,
-                vatPercent: isInv ? parseFloat(document.getElementById('invoiceVatPercent').value) : 0
-            };
-
-            if (editingExpenseId !== null) {
-                const idx = trip.expenses.findIndex(e => e.id === editingExpenseId);
-                if (idx !== -1) trip.expenses[idx] = expData;
-            } else { trip.expenses.push(expData); }
-
-            closeExpenseModal(); saveTripToCloud(trip);
-        }
-
-        window.startEditExpense = function (id) {
-            const trip = getActiveTrip(); const e = trip.expenses.find(x => x.id === id); if (!e) return;
-            editingExpenseId = id;
-            document.getElementById('expenseCardTitle').innerHTML = t('<span>✏️</span> تعديل المصروف', '<span>✏️</span> Edit Expense');
-            document.getElementById('submitExpenseBtn').innerHTML = t('✔️ حفظ التعديل', '✔️ Update');
-            document.getElementById('expensePayer').value = e.paidBy;
-            document.getElementById('expenseDesc').value = e.description;
-
-            let savedDate = e.rawDate || e.dateTime || e.date || e.timestamp || e.createdAt || e.time;
-            document.getElementById('expenseDateTime').value = formatToDateTimeLocalString(savedDate);
-
-            document.getElementById('expenseCategory').value = e.category || '';
-
-            if (e.isInvoice) {
-                switchExpenseMode('invoice'); tempInvoiceItems = e.invoiceItems ? [...e.invoiceItems] : [];
-                document.getElementById('invoiceDiscountPercent').value = e.discountPercent || 0;
-                document.getElementById('invoiceServicePercent').value = e.servicePercent || 0;
-                document.getElementById('invoiceVatPercent').value = e.vatPercent || 0;
-                renderTemporaryInvoiceItemsListUI(); updateInvoiceLiveSummary();
-            } else {
-                switchExpenseMode('simple'); document.getElementById('expenseAmount').value = e.amount;
-                trip.members.forEach(m => {
-                    const cb = document.getElementById(`check_${m.name}`); const inp = document.getElementById(`share_${m.name}`);
-                    const val = e.shares[m.name] || 0;
-                    if (cb && inp) { cb.checked = val > 0; inp.value = val > 0 ? val.toFixed(2) : ''; }
-                });
-            }
-            document.getElementById('expenseModal').classList.remove('hidden'); document.body.style.overflow = 'hidden';
-        }
-
-        window.deleteExpense = function (id) {
-            if (!confirm(t('تأكيد الحذف؟', 'Delete?'))) return;
-            const trip = getActiveTrip(); trip.expenses = trip.expenses.filter(x => x.id !== id);
-            saveTripToCloud(trip);
-        }
-
-        function resetExpenseForm(trip) {
-            document.getElementById('expenseCardTitle').innerHTML = t('<span>💰</span> تسجيل مصروف', '<span>💰</span> Log Expense');
-            document.getElementById('submitExpenseBtn').innerHTML = t('✔️ حفظ البيانات', '✔️ Save');
-            document.getElementById('expensePayer').value = ''; document.getElementById('expenseAmount').value = '';
-            document.getElementById('expenseDesc').value = '';
-
-            document.getElementById('expenseDateTime').value = getLocalIsoString();
-
-            document.getElementById('expenseCategory').selectedIndex = 0;
-            tempInvoiceItems = []; document.getElementById('invoiceItemName').value = ''; document.getElementById('invoiceItemPrice').value = '';
-            document.getElementById('invoiceDiscountPercent').value = '0'; document.getElementById('invoiceServicePercent').value = '12'; document.getElementById('invoiceVatPercent').value = '14';
-            renderTemporaryInvoiceItemsListUI();
-            trip.members.forEach(m => {
-                const cb = document.getElementById(`check_${m.name}`); const inp = document.getElementById(`share_${m.name}`);
-                if (cb) cb.checked = true; if (inp) inp.value = '';
-            });
-            switchExpenseMode('simple');
-        }
-
-        window.toggleRow = function (id) {
-            const el = document.getElementById(id);
-            if (el) el.classList.toggle('hidden');
-        }
-
-        function updateExpensesTable(trip) {
-            const tbody = document.getElementById('expensesTableBody'); tbody.innerHTML = '';
-            if (!trip.expenses || trip.expenses.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-gray-400 italic">${t('لا يوجد', 'Empty')}</td></tr>`; return;
-            }
-
-            const sorted = [...trip.expenses].sort((a, b) => new Date(formatToDateTimeLocalString(b.rawDate || b.dateTime) || 0) - new Date(formatToDateTimeLocalString(a.rawDate || a.dateTime) || 0));
-
-            sorted.forEach(e => {
-                let sDet = Object.keys(e.shares).filter(n => e.shares[n] > 0).map(n => `${n}(${e.shares[n].toFixed(0)})`).join('، ');
-                let dDate = formatDateString(e.rawDate || e.dateTime || e.date);
-                let catBadge = `<span class="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 text-[11px] px-2.5 py-1 rounded-full font-bold whitespace-nowrap">${e.category || t('عام', 'Gen')}</span>`;
-                let typeIco = e.isInvoice ? '🧾 ' : '';
-
-                const trM = document.createElement('tr');
-                trM.className = "hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition border-b border-gray-100 dark:border-gray-700 last:border-0";
-                trM.onclick = () => toggleRow(`det_${e.id}`);
-                trM.innerHTML = `
-                  <td class="px-4 py-3 text-xs font-mono text-gray-500 whitespace-nowrap">${dDate}</td>
-                  <td class="px-4 py-3 text-xs font-bold text-gray-800 dark:text-gray-200 truncate max-w-[80px]">${e.paidBy}</td>
-                  <td class="px-4 py-3 text-xs font-semibold text-gray-700 dark:text-gray-300 truncate max-w-[130px]">${typeIco}${e.description}</td>
-                  <td class="px-4 py-3 text-end font-black text-emerald-600 dark:text-emerald-400 text-sm whitespace-nowrap">${e.amount.toFixed(2)} <span class="text-[10px] text-gray-400">▼</span></td>
-                `;
-                tbody.appendChild(trM);
-
-                const trD = document.createElement('tr');
-                trD.id = `det_${e.id}`;
-                trD.className = "hidden bg-gray-50/80 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700 shadow-inner";
-                trD.innerHTML = `
-                  <td colspan="4" class="px-4 py-4">
-                    <div class="flex flex-col gap-3 text-xs text-gray-600 dark:text-gray-300">
-                        <div class="flex justify-between items-center flex-wrap gap-2">
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-gray-400 uppercase text-[10px]">${t('البند (التصنيف):', 'Category:')}</span>
-                                ${catBadge}
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="startEditExpense('${e.id}')" class="bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-300 px-3 py-1.5 rounded font-bold hover:bg-blue-200 transition">✏️ ${t('تعديل', 'Edit')}</button>
-                                <button onclick="deleteExpense('${e.id}')" class="bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-300 px-3 py-1.5 rounded font-bold hover:bg-rose-200 transition">🗑️</button>
-                            </div>
-                        </div>
-                        <div><span class="font-bold block text-gray-400 uppercase text-[10px] mb-1">${t('توزيع المبلغ على المشتركين:', 'Split Details:')}</span><p class="leading-relaxed font-medium text-gray-800 dark:text-gray-200">${sDet}</p></div>
-                    </div>
-                  </td>
-                `;
-                tbody.appendChild(trD);
-            });
-        }
-
-        function calculateEverything(trip) {
-            if (!trip.expenses) trip.expenses = [];
-            const totalE = trip.expenses.reduce((s, e) => s + e.amount, 0);
-            document.getElementById('totalTripExpenses').textContent = totalE.toFixed(2);
-            document.getElementById('totalInvoices').textContent = trip.expenses.length;
-
-            const setList = document.getElementById('settlementList');
-            const planList = document.getElementById('paymentPlanList');
-            if (trip.members.length === 0) {
-                setList.innerHTML = `<p class="text-xs text-center text-gray-400 py-2">${t('لا أفراد', 'No members')}</p>`;
-                planList.innerHTML = `<p class="text-xs text-center text-gray-400 py-2">-</p>`;
-                document.getElementById('tripReportContentBox').innerHTML = '';
-                if (myChart) { myChart.destroy(); myChart = null; }
-                return;
-            }
-
-            let mBals = [];
-            setList.innerHTML = '';
-            trip.members.forEach(m => {
-                let pd = trip.expenses.filter(e => e.paidBy === m.name).reduce((s, e) => s + e.amount, 0);
-                let ow = trip.expenses.reduce((s, e) => s + (e.shares[m.name] || 0), 0);
-                let bal = pd - ow;
-                mBals.push({ name: m.name, balance: bal, paid: pd, owed: ow });
-
-                const div = document.createElement('div');
-                div.className = "p-3 rounded-xl flex justify-between items-center border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm";
-                if (bal > 0.01) {
-                    div.innerHTML = `<span class="text-sm font-bold text-gray-800 dark:text-gray-200">👤 ${m.name}</span> <span class="text-emerald-600 dark:text-emerald-400 font-black text-sm">${t('له:', 'Net:')} +${bal.toFixed(1)}</span>`;
-                } else if (bal < -0.01) {
-                    div.innerHTML = `<span class="text-sm font-bold text-gray-800 dark:text-gray-200">👤 ${m.name}</span> <span class="text-rose-600 dark:text-rose-400 font-black text-sm">${t('عليه:', 'Net:')} -${Math.abs(bal).toFixed(1)}</span>`;
-                } else {
-                    div.innerHTML = `<span class="text-sm font-bold text-gray-800 dark:text-gray-200">👤 ${m.name}</span> <span class="text-gray-400 font-bold text-xs">${t('خالص', 'Settled')}</span>`;
-                }
-                setList.appendChild(div);
-            });
-
-            const plan = generatePaymentPlan(mBals);
-            planList.innerHTML = '';
-            if (plan.length === 0) { planList.innerHTML = `<p class="text-sm text-center text-indigo-500 font-bold py-2">🎉 ${t('الكل خالص', 'All Settled')}</p>`; }
-            else {
-                plan.forEach(p => {
-                    const div = document.createElement('div');
-                    div.className = "p-2.5 bg-white dark:bg-gray-800 rounded-xl flex justify-between items-center text-xs shadow-sm border border-indigo-50 dark:border-indigo-900/30";
-                    div.innerHTML = `<div class="flex items-center gap-1.5"><span class="font-bold text-rose-600 dark:text-rose-400 truncate max-w-[70px]">${p.debtor}</span><span class="text-gray-500 dark:text-gray-400 font-semibold px-1 text-[11px]">${t('يدفع لـ', 'pays')}</span><span class="font-bold text-emerald-600 dark:text-emerald-400 truncate max-w-[70px]">${p.creditor}</span></div><div class="font-black text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/50 px-2 py-1 rounded">${p.amount.toFixed(1)}</div>`;
-                    planList.appendChild(div);
-                });
-            }
-
-            buildDetailedReportUI(trip, mBals, totalE);
-            drawChart(trip);
-        }
-
-        function generatePaymentPlan(balances) {
-            let b = JSON.parse(JSON.stringify(balances));
-            let debtors = b.filter(x => x.balance < -0.01).map(x => ({ name: x.name, amount: Math.abs(x.balance) }));
-            let creditors = b.filter(x => x.balance > 0.01).map(x => ({ name: x.name, amount: x.balance }));
-            let plan = [];
-            let i = 0; let j = 0;
-            while (i < debtors.length && j < creditors.length) {
-                let d = debtors[i]; let c = creditors[j];
-                let pay = Math.min(d.amount, c.amount);
-                if (pay > 0.01) plan.push({ debtor: d.name, creditor: c.name, amount: pay });
-                d.amount -= pay; c.amount -= pay;
-                if (d.amount <= 0.01) i++;
-                if (c.amount <= 0.01) j++;
-            }
-            return plan;
-        }
-
-        function drawChart(trip) {
-            const ctx = document.getElementById('categoryChart').getContext('2d');
-            if (myChart) myChart.destroy();
-            const catTotals = {};
-            trip.expenses.forEach(e => { let c = e.category || t('عام', 'General'); catTotals[c] = (catTotals[c] || 0) + e.amount; });
-            const labels = Object.keys(catTotals); const data = Object.values(catTotals);
-            if (data.length === 0) return;
-
-            const isDark = document.documentElement.classList.contains('dark');
-            const textColor = isDark ? '#e2e8f0' : '#475569';
-
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{ data: data, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#14b8a6', '#f97316'], borderWidth: 0 }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: true,
-                    plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: 'sans-serif' } } } }
-                }
-            });
-        }
-
-        function buildDetailedReportUI(trip, balances, total) {
-            const box = document.getElementById('tripReportContentBox');
-            let html = '';
-            balances.forEach(b => {
-                let cls = b.balance > 0.01 ? 'text-emerald-600 dark:text-emerald-400' : (b.balance < -0.01 ? 'text-rose-600 dark:text-rose-400' : 'text-gray-400');
-                let txt = b.balance > 0.01 ? `له: +${b.balance.toFixed(1)}` : (b.balance < -0.01 ? `عليه: -${Math.abs(b.balance).toFixed(1)}` : `خالص (0)`);
-                let sharePercent = total > 0 ? ((b.owed / total) * 100).toFixed(0) : 0;
-
-                html += `
-                  <div class="flex flex-col sm:flex-row justify-between sm:items-center text-xs p-3.5 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-100 dark:border-gray-700 mb-2.5 gap-3 shadow-sm">
-                    <div class="flex-1">
-                      <div class="flex justify-between items-center mb-1.5">
-                        <span class="font-bold text-gray-800 dark:text-gray-100 text-sm flex items-center gap-1.5">
-                          👤 ${b.name}
-                        </span>
-                        <span class="font-black ${cls} text-xs px-2 py-0.5 rounded bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">${txt}</span>
-                      </div>
-                      <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-600 dark:text-gray-300 mt-2 bg-white/60 dark:bg-gray-800/50 p-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-                        <div>
-                          <span class="text-gray-400 block text-[10px]">${t('إجمالي ما دفعه:', 'Total Paid:')}</span>
-                          <strong class="text-blue-600 dark:text-blue-400 font-mono text-xs">${b.paid.toFixed(2)}</strong>
-                        </div>
-                        <div>
-                          <span class="text-gray-400 block text-[10px]">${t('نصيبه من المصروفات:', 'Consumption Share:')}</span>
-                          <strong class="text-purple-600 dark:text-purple-400 font-mono text-xs">${b.owed.toFixed(2)}</strong> <span class="text-[9px] text-gray-400">(${sharePercent}%)</span>
-                        </div>
-                      </div>
-                    </div>
-                    <button onclick="sendIndividualReport('${b.name}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-3.5 py-2 rounded-xl transition shadow-sm whitespace-nowrap self-stretch sm:self-center flex items-center justify-center gap-1.5 text-xs">
-                      <span>💬</span> <span>${t('إرسال واتساب', 'WhatsApp')}</span>
-                    </button>
-                  </div>`;
-            });
-            box.innerHTML = `<div class="max-h-80 overflow-y-auto custom-scrollbar pr-1">${html}</div>`;
-        }
-
-        window.sendIndividualReport = function (memberName) {
-            const trip = getActiveTrip(); const m = trip.members.find(x => x.name === memberName); if (!m) return;
-            let mBals = [];
-            trip.members.forEach(mbr => {
-                let p = trip.expenses.filter(e => e.paidBy === mbr.name).reduce((s, e) => s + e.amount, 0);
-                let o = trip.expenses.reduce((s, e) => s + (e.shares[mbr.name] || 0), 0);
-                mBals.push({ name: mbr.name, balance: p - o });
-            });
-            const fullPlan = generatePaymentPlan(mBals);
-            const myDebts = fullPlan.filter(p => p.debtor === memberName);
-
-            const bal = mBals.find(x => x.name === memberName).balance;
-
-            let wP = '';
-            let wO = '';
-            trip.expenses.forEach(e => {
-                if (e.paidBy === memberName) {
-                    wP += `├ 🛒 *${e.category || t('عام', 'Gen')}* ┆ ${e.description} ┆ *${e.amount.toFixed(0)}*\n`;
-                }
-                if (e.shares[memberName] > 0) {
-                    wO += `├ 🍽️ *${e.category || t('عام', 'Gen')}* ┆ ${e.description} ┆ *${e.shares[memberName].toFixed(0)}*\n`;
-                }
-            });
-
-            if (wP !== '') {
-                wP = `*╔═══ 💸 تمويلك (مدفوعاتك) ═══╗*\n` + wP + `╚════════════════════╝\n`;
-            } else {
-                wP = `*╔═══ 💸 تمويلك (مدفوعاتك) ═══╗*\n├ لا توجد مدفوعات مسجلة لك\n╚════════════════════╝\n`;
-            }
-
-            if (wO !== '') {
-                wO = `*╔═══ 🍽️ استهلاكك (مشاركاتك) ═══╗*\n` + wO + `╚════════════════════╝\n`;
-            } else {
-                wO = `*╔═══ 🍽️ استهلاكك (مشاركاتك) ═══╗*\n├ لا توجد استهلاكات مسجلة لك\n╚════════════════════╝\n`;
-            }
-
-            let planMsg = '';
-            if (myDebts.length > 0) {
-                planMsg = `\n*┌─── 💳 خطة السداد المطلوبة ───┐*\n`;
-                myDebts.forEach(d => planMsg += `│ 📌 ${t('يدفع لـ', 'Pays')} *${d.creditor}* : *${d.amount.toFixed(0)}*\n`);
-                planMsg += `*└───────────────────────┘*\n`;
-            } else if (bal < -0.01) {
-                planMsg = `\n*┌─── 💳 إجمالي المطلوب منك ───┐*\n│ 🔴 المبلغ: *${Math.abs(bal).toFixed(0)}*\n*└───────────────────────┘*\n`;
-            }
-
-            let stat = bal > 0.01 ? `🟢 *لك متبقي:* +${bal.toFixed(0)}` : (bal < -0.01 ? `🔴 *مطلوب منك:* -${Math.abs(bal).toFixed(0)}` : `⚪ *حسابك خالص تماماً*`);
-
-            let msg = `أهلاً يا *${m.name}* 👋\n` +
-                `📋 هذا كشف حسابك التفصيلي في رحلة:\n` +
-                `🌍 *${trip.name}*\n` +
-                `════════════════════\n\n` +
-                `${wP}\n${wO}\n` +
-                `📌 *النتيجة النهائية (الصافي):*\n` +
-                `╰ ${stat}\n` +
-                `${planMsg}`;
-
-            let cP = (m.phone || '').replace(/\D/g, '');
-            if (cP.length === 11 && cP.startsWith('01')) cP = '20' + cP;
-            window.open(cP ? `https://api.whatsapp.com/send?phone=${cP}&text=${encodeURIComponent(msg)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        window.copyReportToClipboard = function () {
-            const trip = getActiveTrip(); if (!trip || trip.members.length === 0) return;
-            const tExp = trip.expenses.reduce((s, e) => s + e.amount, 0);
-            let mBals = [];
-            trip.members.forEach(m => {
-                let p = trip.expenses.filter(e => e.paidBy === m.name).reduce((s, e) => s + e.amount, 0);
-                let o = trip.expenses.reduce((s, e) => s + (e.shares[m.name] || 0), 0);
-                mBals.push({ name: m.name, balance: p - o, paid: p, owed: o });
-            });
-
-            let txt = `📊 *${t('تقرير:', 'Report:')} ${trip.name}* 📊\n💰 *${t('الإجمالي:', 'Total:')}* ${tExp.toFixed(0)}\n\n👥 *${t('كشف الحسابات:', 'Accounts:')}*\n`;
-            mBals.forEach(b => {
-                let s = b.balance > 0.01 ? `🟢 +${b.balance.toFixed(0)}` : (b.balance < -0.01 ? `🔴 -${Math.abs(b.balance).toFixed(0)}` : `⚪ 0`);
-                txt += `👤 *${b.name}* -> ${t('دفع:', 'Paid:')} ${b.paid.toFixed(0)} | ${t('استهلك:', 'Consumed:')} ${b.owed.toFixed(0)} | ${s}\n`;
-            });
-
-            const plan = generatePaymentPlan(mBals);
-            txt += `\n💸 *${t('التسوية:', 'Settlement:')}*\n`;
-            if (plan.length === 0) txt += `  🎉 ${t('الحسابات مكتملة!', 'All settled!')}\n`;
-            else plan.forEach(p => txt += `  🔴 ${p.debtor} [${t('يدفع لـ', 'pays')}] 🟢 ${p.creditor} : *${p.amount.toFixed(0)}*\n`);
-
-            navigator.clipboard.writeText(txt).then(() => showToast(t('تم النسخ بنجاح!', 'Copied successfully!')));
-        }
-    </script>
+    <script type="module" src="./src/main.js"></script>
 </body>
 
 </html>
