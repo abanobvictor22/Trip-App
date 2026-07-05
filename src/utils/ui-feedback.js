@@ -73,7 +73,7 @@ export function updateNotificationButtonState() {
   const btn = document.getElementById("notifBtn");
   const txtAr = document.getElementById("notifTextAr");
   const txtEn = document.getElementById("notifTextEn");
-  // if (!btn || !('Notification' in window)) { if(btn) btn.style.display = 'none'; return; }
+  if (!btn || !('Notification' in window)) { if(btn) btn.style.display = 'none'; return; }
   if (Notification.permission === "granted") {
     btn.classList.add("bg-emerald-500/30", "border-emerald-400");
     txtAr.innerText = "🔔 تنبيهات مفعلة";
