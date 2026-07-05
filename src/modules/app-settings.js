@@ -16,6 +16,16 @@ export function setLang(lang) {
 
   if (getActiveTrip()) refreshActiveTripUI();
   else updateTripsDropdown();
+  const themeIconAr = document.getElementById("themeIconAr");
+  const themeIconEn = document.getElementById("themeIconEn");
+
+  if (lang == "ar") {
+    themeIconAr.classList.remove("hidden");
+    themeIconEn.classList.add("hidden");
+  } else {
+    themeIconAr.classList.add("hidden");
+    themeIconEn.classList.remove("hidden");
+  }
 
   const inpName = document.getElementById("tripNameInput");
   if (inpName)
